@@ -1,0 +1,6 @@
+streamlit
+plotly
+numpy
+streamlit-shadcn-ui==1.0.1
+PyYAML
+plotly

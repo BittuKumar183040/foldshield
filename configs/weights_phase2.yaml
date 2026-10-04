@@ -1,0 +1,7 @@
+# contents of configs/weights_phase2.yaml 
+phase2: 
+  braid:      0.20 
+  motif:      0.15
+  topology:   0.20 
+  local_topo: 0.25 
+  ssef:       0.20 

@@ -1,0 +1,881 @@
+{
+  "file": "D:\\Rexcrux\\Mycode-Foldshield\\protien similarity\\input\\1CRN.pdb",
+  "parsed_ok": true,
+  "parsing_errors": null,
+  "models": 1,
+  "chains": {
+    "A": {
+      "residue_count": 46,
+      "atom_count": 327,
+      "missing_ca": 0,
+      "residues": [
+        [
+          "THR",
+          [
+            " ",
+            1,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "THR",
+          [
+            " ",
+            2,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            3,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            4,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PRO",
+          [
+            " ",
+            5,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "SER",
+          [
+            " ",
+            6,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ILE",
+          [
+            " ",
+            7,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "VAL",
+          [
+            " ",
+            8,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ALA",
+          [
+            " ",
+            9,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ARG",
+          [
+            " ",
+            10,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "SER",
+          [
+            " ",
+            11,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ASN",
+          [
+            " ",
+            12,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PHE",
+          [
+            " ",
+            13,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ASN",
+          [
+            " ",
+            14,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "VAL",
+          [
+            " ",
+            15,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            16,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ARG",
+          [
+            " ",
+            17,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "LEU",
+          [
+            " ",
+            18,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PRO",
+          [
+            " ",
+            19,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "GLY",
+          [
+            " ",
+            20,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "THR",
+          [
+            " ",
+            21,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PRO",
+          [
+            " ",
+            22,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "GLU",
+          [
+            " ",
+            23,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ALA",
+          [
+            " ",
+            24,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ILE",
+          [
+            " ",
+            25,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            26,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ALA",
+          [
+            " ",
+            27,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "THR",
+          [
+            " ",
+            28,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "TYR",
+          [
+            " ",
+            29,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "THR",
+          [
+            " ",
+            30,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "GLY",
+          [
+            " ",
+            31,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            32,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ILE",
+          [
+            " ",
+            33,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ILE",
+          [
+            " ",
+            34,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ILE",
+          [
+            " ",
+            35,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PRO",
+          [
+            " ",
+            36,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "GLY",
+          [
+            " ",
+            37,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ALA",
+          [
+            " ",
+            38,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "THR",
+          [
+            " ",
+            39,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "CYS",
+          [
+            " ",
+            40,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "PRO",
+          [
+            " ",
+            41,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "GLY",
+          [
+            " ",
+            42,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ASP",
+          [
+            " ",
+            43,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "TYR",
+          [
+            " ",
+            44,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ALA",
+          [
+            " ",
+            45,
+            " "
+          ],
+          "X"
+        ],
+        [
+          "ASN",
+          [
+            " ",
+            46,
+            " "
+          ],
+          "X"
+        ]
+      ],
+      "altlocs_detected": false
+    }
+  },
+  "residue_counts": {
+    "A": 46
+  },
+  "atom_counts": {
+    "A": 327
+  },
+  "non_standard_residues": [
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        1,
+        " "
+      ]
+    },
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        2,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        3,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        4,
+        " "
+      ]
+    },
+    {
+      "resname": "PRO",
+      "chain": "A",
+      "resid": [
+        " ",
+        5,
+        " "
+      ]
+    },
+    {
+      "resname": "SER",
+      "chain": "A",
+      "resid": [
+        " ",
+        6,
+        " "
+      ]
+    },
+    {
+      "resname": "ILE",
+      "chain": "A",
+      "resid": [
+        " ",
+        7,
+        " "
+      ]
+    },
+    {
+      "resname": "VAL",
+      "chain": "A",
+      "resid": [
+        " ",
+        8,
+        " "
+      ]
+    },
+    {
+      "resname": "ALA",
+      "chain": "A",
+      "resid": [
+        " ",
+        9,
+        " "
+      ]
+    },
+    {
+      "resname": "ARG",
+      "chain": "A",
+      "resid": [
+        " ",
+        10,
+        " "
+      ]
+    },
+    {
+      "resname": "SER",
+      "chain": "A",
+      "resid": [
+        " ",
+        11,
+        " "
+      ]
+    },
+    {
+      "resname": "ASN",
+      "chain": "A",
+      "resid": [
+        " ",
+        12,
+        " "
+      ]
+    },
+    {
+      "resname": "PHE",
+      "chain": "A",
+      "resid": [
+        " ",
+        13,
+        " "
+      ]
+    },
+    {
+      "resname": "ASN",
+      "chain": "A",
+      "resid": [
+        " ",
+        14,
+        " "
+      ]
+    },
+    {
+      "resname": "VAL",
+      "chain": "A",
+      "resid": [
+        " ",
+        15,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        16,
+        " "
+      ]
+    },
+    {
+      "resname": "ARG",
+      "chain": "A",
+      "resid": [
+        " ",
+        17,
+        " "
+      ]
+    },
+    {
+      "resname": "LEU",
+      "chain": "A",
+      "resid": [
+        " ",
+        18,
+        " "
+      ]
+    },
+    {
+      "resname": "PRO",
+      "chain": "A",
+      "resid": [
+        " ",
+        19,
+        " "
+      ]
+    },
+    {
+      "resname": "GLY",
+      "chain": "A",
+      "resid": [
+        " ",
+        20,
+        " "
+      ]
+    },
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        21,
+        " "
+      ]
+    },
+    {
+      "resname": "PRO",
+      "chain": "A",
+      "resid": [
+        " ",
+        22,
+        " "
+      ]
+    },
+    {
+      "resname": "GLU",
+      "chain": "A",
+      "resid": [
+        " ",
+        23,
+        " "
+      ]
+    },
+    {
+      "resname": "ALA",
+      "chain": "A",
+      "resid": [
+        " ",
+        24,
+        " "
+      ]
+    },
+    {
+      "resname": "ILE",
+      "chain": "A",
+      "resid": [
+        " ",
+        25,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        26,
+        " "
+      ]
+    },
+    {
+      "resname": "ALA",
+      "chain": "A",
+      "resid": [
+        " ",
+        27,
+        " "
+      ]
+    },
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        28,
+        " "
+      ]
+    },
+    {
+      "resname": "TYR",
+      "chain": "A",
+      "resid": [
+        " ",
+        29,
+        " "
+      ]
+    },
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        30,
+        " "
+      ]
+    },
+    {
+      "resname": "GLY",
+      "chain": "A",
+      "resid": [
+        " ",
+        31,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        32,
+        " "
+      ]
+    },
+    {
+      "resname": "ILE",
+      "chain": "A",
+      "resid": [
+        " ",
+        33,
+        " "
+      ]
+    },
+    {
+      "resname": "ILE",
+      "chain": "A",
+      "resid": [
+        " ",
+        34,
+        " "
+      ]
+    },
+    {
+      "resname": "ILE",
+      "chain": "A",
+      "resid": [
+        " ",
+        35,
+        " "
+      ]
+    },
+    {
+      "resname": "PRO",
+      "chain": "A",
+      "resid": [
+        " ",
+        36,
+        " "
+      ]
+    },
+    {
+      "resname": "GLY",
+      "chain": "A",
+      "resid": [
+        " ",
+        37,
+        " "
+      ]
+    },
+    {
+      "resname": "ALA",
+      "chain": "A",
+      "resid": [
+        " ",
+        38,
+        " "
+      ]
+    },
+    {
+      "resname": "THR",
+      "chain": "A",
+      "resid": [
+        " ",
+        39,
+        " "
+      ]
+    },
+    {
+      "resname": "CYS",
+      "chain": "A",
+      "resid": [
+        " ",
+        40,
+        " "
+      ]
+    },
+    {
+      "resname": "PRO",
+      "chain": "A",
+      "resid": [
+        " ",
+        41,
+        " "
+      ]
+    },
+    {
+      "resname": "GLY",
+      "chain": "A",
+      "resid": [
+        " ",
+        42,
+        " "
+      ]
+    },
+    {
+      "resname": "ASP",
+      "chain": "A",
+      "resid": [
+        " ",
+        43,
+        " "
+      ]
+    },
+    {
+      "resname": "TYR",
+      "chain": "A",
+      "resid": [
+        " ",
+        44,
+        " "
+      ]
+    },
+    {
+      "resname": "ALA",
+      "chain": "A",
+      "resid": [
+        " ",
+        45,
+        " "
+      ]
+    },
+    {
+      "resname": "ASN",
+      "chain": "A",
+      "resid": [
+        " ",
+        46,
+        " "
+      ]
+    }
+  ],
+  "hetatms_present": false,
+  "missing_ca_counts": {
+    "A": 0
+  },
+  "altlocs_detected": false,
+  "b_factor_stats": {
+    "min": 3.38,
+    "max": 28.98,
+    "mean": 6.921559633027524,
+    "std": 2.942966686734115
+  },
+  "issues": [
+    "Found 46 non-standard residues (mapped to X or fallback)."
+  ],
+  "chain_ids": [
+    "A"
+  ],
+  "summary": {
+    "models": 1,
+    "chains": [
+      "A"
+    ],
+    "chain_ids": [
+      "A"
+    ],
+    "total_residues": 46,
+    "total_atoms": 327,
+    "n_issues": 1
+  }
+}

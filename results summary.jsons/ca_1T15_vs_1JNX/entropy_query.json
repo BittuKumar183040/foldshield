@@ -1,0 +1,16 @@
+{
+  "per_position_entropy": [],
+  "alphabet": [],
+  "alphabet_size": 0,
+  "params": {
+    "grid_size": 24,
+    "window": null
+  },
+  "npy_path": "entropy_query.npy",
+  "shape": [
+    24,
+    24
+  ],
+  "min": 0.0,
+  "max": 0.0
+}
