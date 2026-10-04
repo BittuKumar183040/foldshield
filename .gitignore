@@ -45,6 +45,9 @@ coverage.xml
 # Linters
 .ruff_cache/
 
+#deps
+node_modules
+
 # Virtual environments
 .venv/
 venv/
@@ -97,3 +100,4 @@ Pipfile.lock
 
 # PyInstaller
 *.spec
+

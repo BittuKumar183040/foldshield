@@ -33,8 +33,10 @@ def section(title: str, caption: str | None = None) -> None:
         st.caption(caption)
 
 
-def page_header() -> None:
-    st.title("FoldShield++ — Protein Similarity Demo")
+def page_header(title: str, subtitle: str | None = None) -> None:
+    st.title(title)
+    if subtitle:
+        st.caption(subtitle)
 
 
 def empty_state(title: str, hint: str) -> None:

@@ -6,3 +6,4 @@ from ui.components.report import report_download
 from ui.components.sidebar import SidebarInputs, render_sidebar
 from ui.components.signals import signals_panel
 from ui.components.verdict import combined_verdict
+from ui.components.viewer import structure_viewer

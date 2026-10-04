@@ -1,0 +1,17 @@
+/* Theme tokens + utilities only. No preflight, so Streamlit's own widgets keep their look.
+   `important` makes every utility win over Streamlit's own (unlayered) CSS. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" important;
+
+/* Folders/files that contain Tailwind class names */
+@source "./app.py";
+@source "./ui";
+
+/* Colours that follow Streamlit's light/dark theme automatically:
+   they derive from the text colour Streamlit already sets (currentColor),
+   instead of CSS variables Streamlit does not define in the main page. */
+@theme inline {
+  --color-secondary: rgb(128 128 128 / 0.08);
+  --color-foreground: currentColor;
+  --color-primary: #2E75B6;
+}
