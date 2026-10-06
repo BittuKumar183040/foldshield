@@ -109,3 +109,62 @@ SAMPLES: dict[str, dict] = {
     "ca_1UBQ_vs_1J85": _generic("ca_1UBQ_vs_1J85"),
 }
 
+
+# =============================================================================
+# Structures offered in the Analyze page's Reference / Query pickers.
+# Each side has its own list. Entry fields:
+#     id       PDB code, also the file name:  <PDB_DIR>/<id>.pdb
+#     label    text shown in the list and on the chip
+#     icon     emoji (or any short text) shown in front of the label
+#     path     where the .pdb file lives, relative to the project root
+#     details  free-form {name: value}; every pair is shown under the label,
+#              so add more keys here whenever you want more info on the list
+# If <path> does not exist, the picker also looks for results/*/<id>.pdb.
+# =============================================================================
+PDB_DIR = "pdb files"
+
+
+def _pdb(pdb_id: str, recommendation: list = None, protein: str = "", icon: str = "🧬", **extra: str) -> dict:
+    details = {"Protein": protein} if protein else {}
+    details.update(extra)
+    return {
+        "id": pdb_id,
+        "recommendation": recommendation or [""],
+        "label": pdb_id,
+        "icon": icon,
+        "path": f"{PDB_DIR}/{pdb_id}.pdb",
+        "details": details,
+    }
+
+def _table(*entries: dict) -> dict[str, dict]:
+    return {e["id"]: e for e in entries}
+
+
+PDBs: dict[str, dict] = _table(
+    _pdb("1A3N", "Hemoglobin"),
+    _pdb("1A00"),
+    _pdb("1AKE", "Adenylate kinase (closed)"),
+    _pdb("1CRN", "Crambin"),
+    _pdb("1HHO", "Oxyhemoglobin"),
+    _pdb("2HHO", "Oxyhemoglobin"),
+    _pdb("1IYJ"),
+    _pdb("1CSH"),
+    _pdb("1J9O"),
+    _pdb("1JM7", "BRCA1/BARD1 RING domains"),
+    _pdb("1QLP"),
+    _pdb("1S2H"),
+    _pdb("1TIM", "Triosephosphate isomerase"),
+    _pdb("1UBQ", "Ubiquitin"),
+    _pdb("1H8H"),
+    _pdb("1J85"),
+    _pdb("1JNX", "BRCA1 BRCT domains"),
+    _pdb("1T15", "BRCA1 BRCT domains"),
+    _pdb("1UBI", "Ubiquitin"),
+    _pdb("2JP1"),
+    _pdb("2RH1", "Beta-2 adrenergic receptor"),
+    _pdb("2V64"),
+    _pdb("4AKE", "Adenylate kinase (open)"),
+    _pdb("4OBE"),
+    _pdb("4TIM", "Triosephosphate isomerase"),
+    _pdb("1UBI")
+)
