@@ -124,47 +124,45 @@ SAMPLES: dict[str, dict] = {
 PDB_DIR = "pdb files"
 
 
-def _pdb(pdb_id: str, recommendation: list = None, protein: str = "", icon: str = "🧬", **extra: str) -> dict:
+def _pdb(id: str, label: str = None, recommendation: list = None, protein: str = "", icon: str = "🧬", **extra: str) -> dict:
     details = {"Protein": protein} if protein else {}
     details.update(extra)
     return {
-        "id": pdb_id,
+        "id": id,
+        "label": label,
         "recommendation": recommendation or [""],
-        "label": pdb_id,
         "icon": icon,
-        "path": f"{PDB_DIR}/{pdb_id}.pdb",
+        "path": f"{PDB_DIR}/{id}.pdb",
         "details": details,
     }
 
 def _table(*entries: dict) -> dict[str, dict]:
     return {e["id"]: e for e in entries}
 
-
 PDBs: dict[str, dict] = _table(
-    _pdb("1A3N", "Hemoglobin"),
-    _pdb("1A00"),
-    _pdb("1AKE", "Adenylate kinase (closed)"),
-    _pdb("1CRN", "Crambin"),
-    _pdb("1HHO", "Oxyhemoglobin"),
-    _pdb("2HHO", "Oxyhemoglobin"),
-    _pdb("1IYJ"),
-    _pdb("1CSH"),
-    _pdb("1J9O"),
-    _pdb("1JM7", "BRCA1/BARD1 RING domains"),
-    _pdb("1QLP"),
-    _pdb("1S2H"),
-    _pdb("1TIM", "Triosephosphate isomerase"),
-    _pdb("1UBQ", "Ubiquitin"),
-    _pdb("1H8H"),
-    _pdb("1J85"),
-    _pdb("1JNX", "BRCA1 BRCT domains"),
-    _pdb("1T15", "BRCA1 BRCT domains"),
-    _pdb("1UBI", "Ubiquitin"),
-    _pdb("2JP1"),
-    _pdb("2RH1", "Beta-2 adrenergic receptor"),
-    _pdb("2V64"),
-    _pdb("4AKE", "Adenylate kinase (open)"),
-    _pdb("4OBE"),
-    _pdb("4TIM", "Triosephosphate isomerase"),
-    _pdb("1UBI")
+    _pdb( id="1A3N", label="Hemoglobin", recommendation=["1A00", "1HHO"], protein="Deoxy human hemoglobin" ),
+    _pdb( id="1A00", label="Hemoglobin mutant", recommendation=["1A3N", "1HHO"], protein="Human hemoglobin beta mutant" ),
+    _pdb( id="1HHO", label="Oxyhemoglobin", recommendation=["1A3N", "1A00"], protein="Human oxyhemoglobin" ),
+    _pdb( id="2HHO", label="Insulin mutant", recommendation=["1A3N"], protein="Human insulin mutant" ),
+    _pdb( id="1AKE", label="Adenylate kinase (closed)", recommendation=["4AKE"], protein="Adenylate kinase" ),
+    _pdb( id="4AKE", label="Adenylate kinase (open)", recommendation=["1AKE"], protein="Adenylate kinase" ),
+    _pdb( id="1CRN", label="Crambin", recommendation=["1UBQ"], protein="Crambin" ),
+    _pdb( id="1IYJ", label="BRCA2–DSS1 complex", recommendation=["1JM7", "1JNX", "1T15"], protein="BRCA2–DSS1 complex" ),
+    _pdb( id="1JM7", label="BRCA1/BARD1 RING domains", recommendation=["1JNX", "1T15", "1IYJ"], protein="BRCA1/BARD1 RING-domain heterodimer" ),
+    _pdb( id="1JNX", label="BRCA1 BRCT domains", recommendation=["1T15", "1JM7", "1IYJ"], protein="BRCA1 BRCT repeat region" ),
+    _pdb( id="1T15", label="BRCA1 BRCT–BACH1 complex", recommendation=["1JNX", "1JM7", "1IYJ"], protein="BRCA1 BRCT domains with BACH1 peptide" ),
+    _pdb( id="1J9O", label="Lymphotactin", recommendation=["2JP1"], protein="Human lymphotactin (XCL1)" ),
+    _pdb( id="2JP1", label="Lymphotactin (alternative)", recommendation=["1J9O"], protein="Human lymphotactin (XCL1)" ),
+    _pdb( id="1S2H", label="Mad2 spindle checkpoint protein", recommendation=["2V64"], protein="Mad2" ),
+    _pdb( id="2V64", label="Mad2 conformational dimer", recommendation=["1S2H"], protein="Mad2" ),
+    _pdb( id="1TIM", label="Triosephosphate isomerase", recommendation=["4TIM"], protein="Triosephosphate isomerase" ),
+    _pdb( id="4TIM", label="Triosephosphate isomerase", recommendation=["1TIM"], protein="Triosephosphate isomerase" ),
+    _pdb( id="1UBQ", label="Ubiquitin", recommendation=["1UBI"], protein="Ubiquitin" ),
+    _pdb( id="1UBI", label="Ubiquitin", recommendation=["1UBQ"], protein="Ubiquitin" ),
+    _pdb( id="1H8H", label="F1-ATPase", recommendation=["1AKE", "4AKE"], protein="Bovine mitochondrial F1-ATPase" ),
+    _pdb( id="1J85", label="YibK methyltransferase", recommendation=["1CSH"], protein="YibK / tRNA methyltransferase homolog" ),
+    _pdb( id="1QLP", label="Alpha-1-antitrypsin", recommendation=["1CSH"], protein="Alpha-1-antitrypsin" ),
+    _pdb( id="2RH1", label="Beta-2 adrenergic receptor", recommendation=["4OBE"], protein="Beta-2 adrenergic receptor" ),
+    _pdb( id="4OBE", label="KRAS", recommendation=["2RH1"], protein="Human KRAS" ),
+    _pdb( id="1CSH", label="Citrate synthase", recommendation=["1AKE", "4AKE"], protein="Citrate synthase" ),
 )
