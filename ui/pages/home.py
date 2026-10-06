@@ -126,13 +126,13 @@ def render() -> None:
     left, right = st.columns(2)
     with left, st.container(border=False):
         st.subheader("Analyze")
-        st.write("Upload two PDB files and run the similarity pipeline.")
-        if st.button("Open analyzer", type="primary", key="home_analyze"):
+        st.write("Select two files and run the similarity pipeline.")
+        if st.button("Open Analyzer", type="primary", key="home_analyze"):
             go("analyze")
     with right, st.container(border=True):
         st.subheader("Proteins")
         st.write("Browse stored structures and open them in 3D.")
-        if st.button("Browse proteins", key="home_proteins"):
+        if st.button("Browse Proteins", key="home_proteins"):
             go("proteins")
 
     st.divider()
