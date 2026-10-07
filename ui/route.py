@@ -29,8 +29,7 @@ class Route:
 ROUTES = (
     Route("home",     "FoldShield++", "", "ui.pages.home", default=True, brand=True),
     Route("analyze",  "Analyze",  "🧪", "ui.pages.analyze"),
-    # Route("proteins", "Proteins", "🧬", "ui.pages.proteins"),
-    # Route("protein",  "Protein",  "🧬", "ui.pages.protein", hidden=True),
+    Route("proteins", "Proteins", "🧬", "ui.pages.proteins")
 )
 
 _PAGES: dict = {}             # key -> st.Page (refreshed on every run)

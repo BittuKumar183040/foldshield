@@ -75,6 +75,7 @@ _CSS = """
             border-radius: 8px; margin-top: 8px; }
 .fs-empty b { display: block; font-size: 16px; margin-bottom: 6px; }
 .fs-empty span { opacity: .7; font-size: 14px; }
+.stMainBlockContainer { padding-top: 50px; padding-bottom: 50px; }
 </style>
 """
 

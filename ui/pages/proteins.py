@@ -1,32 +1,46 @@
 import streamlit as st
-from services import catalog
-from ui.components import empty_state, page_header
-from ui.route import go
+
+from services import structures
+from ui.components import empty_state, page_header, structure_viewer
+
+_TABLE = "protein_table"
+_VERSION = "protein_table_version"
+
+
+def _table_key() -> str:
+    # The key changes after every click. That gives a fresh table with nothing selected, so
+    # clicking the same row again (after closing the popup) opens it again.
+    return f"{_TABLE}_{st.session_state.get(_VERSION, 0)}"
+
+
+def _show_model(entry: dict) -> None:
+    title = f"{entry['icon']} {entry['id']}" + (f" · {entry['label']}" if entry.get("label") else "")
+
+    @st.dialog(title, width="large", on_dismiss="rerun")
+    def _popup() -> None:
+        structure_viewer(**structures.viewer_args(entry), height=460)
+        for key, value in entry.get("details", {}).items():
+            st.caption(f"{key}: {value}")
+    _popup()
 
 
 def render() -> None:
-    page_header("Proteins", "Browse stored structures. Select a row to open it.")
-    df = catalog.load_catalog()
+    page_header("Proteins", "Browse stored structures. Click any row to view its 3D model.")
+    df = structures.table()
     if df.empty:
-        empty_state("The catalog is empty", f"Add rows to {catalog.CATALOG_PATH.name}.")
+        empty_state("No structures yet", "Add entries to PDBs in static/samples.py.")
         return
-    if catalog.is_sample():
-        st.caption("Showing sample data. Put your own file at data/catalog.csv "
-                   "(needs an id column; pdb_id enables the 3D viewer).")
 
-    f1, f2 = st.columns([2, 1])
-    query = f1.text_input("Search", placeholder="Name, ID, PDB code…")
-    collections = ()
-    if "collection" in df.columns:
-        collections = f2.multiselect("Collection", sorted(df["collection"].dropna().unique()))
-
-    view = catalog.search(df, query, collections).reset_index(drop=True)
+    query = st.text_input("Search", placeholder="ID, label, protein…")
+    view = structures.search(df, query).reset_index(drop=True)
     st.caption(f"{len(view)} of {len(df)} structures")
-    event = st.dataframe(view, hide_index=True, use_container_width=True,
-                         on_select="rerun", selection_mode="single-row", key="protein_table")
 
-    rows = event.selection.rows
-    if rows:
-        pid = str(view.iloc[rows[0]]["id"])
-        if st.button(f"Open {pid}", type="primary"):
-            go("protein", protein=pid)
+    # "single-cell" selection = a click anywhere in a row, with no checkbox column.
+    event = st.dataframe(view, hide_index=True, width="stretch", height="content", on_select="rerun", selection_mode="single-cell", key=_table_key())
+
+    cells = event.selection.cells
+    if cells:
+        entry = structures.get(view.iloc[cells[0][0]]["ID"])
+        st.session_state[_VERSION] = st.session_state.get(_VERSION, 0) + 1   # next run: unselected table
+        if entry:
+            _show_model(entry)
