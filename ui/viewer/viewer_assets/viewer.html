@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<!-- first paint: set the theme colours BEFORE the (large) libraries below are parsed, so the frame never flashes white in dark mode -->
+<meta name="color-scheme" content="__SCHEME__">
+<style>html,body{margin:0;background:__BG__;color-scheme:__SCHEME__}</style>
+<!--__LIBS__-->
+<style>
+:root { --box-h: __HEIGHT__; }
+/*__CSS__*/
+</style></head>
+<body>
+<div id="wrap" class="__WRAPCLS__">
+  <!-- data-tip="Title|Description" feeds the custom tooltip; data-label is the text fallback if icons fail to load -->
+  <!-- elements with class "full-only" are hidden in the minimal view (and shown again in fullscreen).
+       Kept in minimal: Representation, Reset view, Save image, Fullscreen. -->
+  <div id="bar">
+    <div>
+      <label class="sel" data-tip="Representation|How atoms are drawn: cartoon, surface, sticks, spheres, lines…">
+        <i data-lucide="shapes"></i>
+        <select id="rep" aria-label="Representation">
+          <option value="cartoon">Cartoon</option>
+          <option value="surface">Surface + cartoon</option>
+          <option value="cartoon+sticks">Cartoon + sticks</option>
+          <option value="sticks">Sticks</option>
+          <option value="ballstick">Ball &amp; stick</option>
+          <option value="spheres">Spheres</option>
+          <option value="lines">Lines</option>
+        </select>
+      </label>
+      <label class="sel full-only" data-tip="Colour scheme|Colour by sequence position, chain, secondary structure, residue type, B-factor or element.">
+        <i data-lucide="palette"></i>
+        <select id="col" aria-label="Colour scheme">
+          <option value="spectrum">Rainbow (N→C)</option>
+          <option value="chain">Chain</option>
+          <option value="ss">Secondary structure</option>
+          <option value="residue">Residue type</option>
+          <option value="bfactor">B-factor</option>
+          <option value="element">Element</option>
+        </select>
+      </label>
+      <span class="sep full-only"></span>
+      <button id="bSpin" class="full-only"   aria-label="Spin"      data-label="Spin"      data-tip="Auto-rotate|Spin the model around the vertical axis. Pauses while you drag."><i data-lucide="refresh-cw"></i></button>
+      <button id="bWire" class="full-only"   aria-label="Wireframe" data-label="Wire"      data-tip="Wireframe|Overlay the atom bonds on the model, or turn the surface into a mesh, to see inside."><i data-lucide="grid-3x3"></i></button>
+      <button id="bAxes" class="full-only"   aria-label="Axes"      data-label="Axes"      data-tip="XYZ axes|Show X (red), Y (green) and Z (blue) axes at the model corner."><i data-lucide="axis-3d"></i></button>
+      <button id="bLegend" class="full-only" aria-label="Legend"    data-label="Legend"    data-tip="Legend|Show or hide the colour legend."><i data-lucide="list"></i></button>
+      <button id="bLig" class="full-only"    aria-label="Ligands"   data-label="Lig"       data-tip="Ligands|Show hetero molecules (drugs, cofactors, ions) as green sticks."><i data-lucide="pill"></i></button>
+      <button id="bWat" class="full-only"    aria-label="Water"     data-label="Water"     data-tip="Water|Show crystallographic water molecules."><i data-lucide="droplets"></i></button>
+      <button id="bPocket" class="full-only" aria-label="Pocket"    data-label="Pocket"    data-tip="Binding pocket|Show residues within 5 Å of the ligand as sticks. Needs a ligand."><i data-lucide="target"></i></button>
+      <span class="sep full-only"></span>
+      <span class="seg full-only">
+        <button id="bModeSel"  aria-label="Select mode"  data-label="Sel"  data-tip="Select mode|Click an atom to highlight and label its residue. Click again to deselect."><i data-lucide="mouse-pointer-click"></i></button>
+        <button id="bModeMeas" aria-label="Measure mode" data-label="Meas" data-tip="Measure mode|Click two atoms to draw a dashed line and read the distance in Å."><i data-lucide="ruler"></i></button>
+      </span>
+      <button id="bFocus" class="full-only"  aria-label="Focus"     data-label="Focus"     data-tip="Focus|Zoom to the selected residues (or the whole model if none)."><i data-lucide="focus"></i></button>
+      <button id="bClear" class="full-only"  aria-label="Clear"     data-label="Clear"     data-tip="Clear|Remove all selections, labels and measurements."><i data-lucide="eraser"></i>Clear</button>
+    </div>
+    <div>
+      <span class="sep full-only"></span>
+      <button id="bReset"  aria-label="Reset view" data-label="Reset"    data-tip="Reset view|Return the camera"><i data-lucide="rotate-3d"></i></button>
+      <!-- <button id="bTheme"  aria-label="Theme"     data-label="Theme"     data-tip="Theme|Switch between light and dark background."><i data-lucide="sun-moon"></i></button> -->
+      <button id="bShot"   aria-label="Save PNG"  data-label="PNG"       data-tip="Save image|Download the current view as a PNG."><i data-lucide="camera"></i></button>
+      <button id="bFull"   aria-label="Fullscreen" data-label="Full"     data-tip="Fullscreen|Fill the screen. Press Esc to exit."><i data-lucide="maximize"></i></button>
+    </div>
+  </div>
+  <div id="stage">
+    <div id="v"></div>
+    <div id="status" class="ov">Loading…</div>
+    <div id="info" class="ov"></div>
+    <div id="legend" class="ov"></div>
+  </div>
+</div>
+<div id="tip"></div>
+
+<script>
+/*__JS__*/
+</script>
+</body>
+</html>

@@ -129,7 +129,7 @@ def render_inputs() -> AnalyzeInputs:
 
         opt_mode, opt_het, opt_run = st.columns([2, 1.5, 1.5], vertical_alignment="bottom")
         with opt_mode:
-            mode = st.radio("Coordinate mode", ["ca", "sequence"], index=0, horizontal=True)
+            mode = st.radio( "Coordinate mode", ["ca", "sequence"], index=0, horizontal=True, format_func=lambda x: "CA" if x == "ca" else "Sequence", )
         with opt_het:
             keep_hetatm = st.checkbox("Keep HETATM", value=False)
         with opt_run:
@@ -138,7 +138,7 @@ def render_inputs() -> AnalyzeInputs:
                             disabled=not ready,
                             help=None if ready else "Choose a reference and a query structure first.")
 
-        with st.expander("Load a saved run"):
-            summary_upload = st.file_uploader("summary.json", type=["json"], key="upload_summary")
+        with st.expander("Load a saved run", expanded=True):
+            summary_upload = st.file_uploader("summary.json", type=["json"], key="upload_summary", width="stretch", help="Load a saved run's summary.json to view its results and visuals.")
 
     return AnalyzeInputs(ref, query, ref_chain, query_chain, mode, keep_hetatm, summary_upload, run)

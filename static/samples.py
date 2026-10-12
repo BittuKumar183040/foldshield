@@ -1,20 +1,3 @@
-"""Sample comparisons shown as cards on the Home page.
-
-Each entry:
-    id     folder name, also the dict key
-    title  heading shown on the card
-    desc   short description (the card clamps it to 3 lines)
-    tags   small pills shown under the title
-    path   result folder, relative to the project root. It holds:
-               thumbnail.png   card image
-               summary.json    scores (read for the score line and "Open in analyzer")
-               <REF>.pdb       reference structure, e.g. 1A3N.pdb
-               <QUERY>.pdb     query structure,     e.g. 1A00.pdb
-
-Add a comparison with  "<id>": _entry(<id>, desc, tags)  or  _generic(<id>)  inside SAMPLES.
-"""
-
-
 def _entry(pair: str, desc: str, tags: list[str]) -> dict:
     return {
         "id": pair,
@@ -141,27 +124,51 @@ def _table(*entries: dict) -> dict[str, dict]:
 
 PDBs: dict[str, dict] = _table(
     _pdb(id="1A00", label="Hemoglobin mutant", recommendation=["1A3N", "1HHO"], protein="Human hemoglobin beta mutant"),
-    _pdb(id="1A3N", label="Hemoglobin", recommendation=["1A00", "1HHO"], protein="Deoxy human hemoglobin"),
+    _pdb(id="1A3N", label="Hemoglobin", recommendation=["1A00", "1HHO", "1MBN"], protein="Deoxy human hemoglobin"),
+    _pdb(id="1AAP", label="Amyloid precursor protease inhibitor domain", recommendation=["1QLP"], protein="Alzheimer's disease amyloid A4 protein, protease inhibitor domain"),
     _pdb(id="1AKE", label="Adenylate kinase (closed)", recommendation=["4AKE"], protein="Adenylate kinase"),
     _pdb(id="1CRN", label="Crambin", recommendation=["1UBQ"], protein="Crambin"),
     _pdb(id="1CSH", label="Citrate synthase", recommendation=["1AKE", "4AKE"], protein="Citrate synthase"),
     _pdb(id="1H8H", label="F1-ATPase", recommendation=["1AKE", "4AKE"], protein="Bovine mitochondrial F1-ATPase"),
-    _pdb(id="1HHO", label="Oxyhemoglobin", recommendation=["1A3N", "1A00"], protein="Human oxyhemoglobin"),
-    _pdb(id="1IYJ", label="BRCA2–DSS1 complex", recommendation=["1JM7", "1JNX", "1T15"], protein="BRCA2–DSS1 complex"),
+    _pdb(id="1HHO", label="Oxyhemoglobin", recommendation=["1A3N", "1A00", "1MBN"], protein="Human oxyhemoglobin"),
+    _pdb(id="1IYJ", label="BRCA2–DSS1 complex", recommendation=["1MIU", "3EU7", "1JM7", "1JNX", "1T15"], protein="BRCA2–DSS1 complex"),
     _pdb(id="1J85", label="YibK methyltransferase", recommendation=["1CSH"], protein="YibK / tRNA methyltransferase homolog"),
+    _pdb(id="1J90", label="Deoxyribonucleoside kinase", recommendation=["1AKE", "4AKE"], protein="Drosophila melanogaster deoxyribonucleoside kinase"),
+    _pdb(id="1JDM", label="Sarcolipin (NMR)", recommendation=["3TLM", "6LN8"], protein="Sarcolipin"),
     _pdb(id="1JM7", label="BRCA1/BARD1 RING domains", recommendation=["1JNX", "1T15", "1IYJ"], protein="BRCA1/BARD1 RING-domain heterodimer"),
     _pdb(id="1JNX", label="BRCA1 BRCT domains", recommendation=["1T15", "1JM7", "1IYJ"], protein="BRCA1 BRCT repeat region"),
+    _pdb(id="1LMB", label="Lambda repressor–DNA complex", recommendation=["2LCL"], protein="Bacteriophage lambda repressor bound to DNA"),
+    _pdb(id="1LYZ", label="Lysozyme", recommendation=["2LYZ"], protein="Hen egg-white lysozyme"),
+    _pdb(id="1MBN", label="Myoglobin", recommendation=["1A3N", "1HHO", "1A00"], protein="Sperm whale myoglobin"),
+    _pdb(id="1MIU", label="BRCA2–DSS1 complex", recommendation=["1IYJ", "3EU7", "1JNX"], protein="BRCA2–DSS1 complex"),
     _pdb(id="1QLP", label="Alpha-1-antitrypsin", recommendation=["1CSH"], protein="Alpha-1-antitrypsin"),
     _pdb(id="1S2H", label="Mad2 spindle checkpoint protein", recommendation=["2V64"], protein="Mad2"),
     _pdb(id="1T15", label="BRCA1 BRCT–BACH1 complex", recommendation=["1JNX", "1JM7", "1IYJ"], protein="BRCA1 BRCT domains with BACH1 peptide"),
+    _pdb(id="1TEN", label="Tenascin FN3 domain", recommendation=[], protein="Human tenascin fibronectin type III domain"),
     _pdb(id="1TIM", label="Triosephosphate isomerase", recommendation=["4TIM"], protein="Triosephosphate isomerase"),
-    _pdb(id="1UBI", label="Ubiquitin", recommendation=["1UBQ"], protein="Ubiquitin"),
-    _pdb(id="1UBQ", label="Ubiquitin", recommendation=["1UBI"], protein="Ubiquitin"),
+    _pdb(id="1UBI", label="Ubiquitin", recommendation=["1UBQ", "4PIG"], protein="Ubiquitin"),
+    _pdb(id="1UBQ", label="Ubiquitin", recommendation=["1UBI", "4PIG"], protein="Ubiquitin"),
+    _pdb(id="2HDM", label="Lymphotactin (V21C/V59C)", recommendation=["2JP1"], protein="Human lymphotactin / XCL1 disulfide-locked variant"),
     _pdb(id="2HHO", label="Insulin mutant", recommendation=["1A3N"], protein="Human insulin mutant"),
-    _pdb(id="2RH1", label="Beta-2 adrenergic receptor", recommendation=["4OBE"], protein="Beta-2 adrenergic receptor"),
+    _pdb(id="2JP1", label="Lymphotactin (alternative conformation)", recommendation=["2HDM"], protein="Human lymphotactin / XCL1"),
+    _pdb(id="2LCL", label="RfaH C-terminal domain", recommendation=["2HDM", "2JP1", "1LMB"], protein="E. coli transcriptional activator RfaH, C-terminal domain"),
+    _pdb(id="2LYZ", label="Lysozyme", recommendation=["1LYZ"], protein="Hen egg-white lysozyme"),
+    _pdb(id="2RH1", label="Beta-2 adrenergic receptor", recommendation=["3SN6", "4OBE"], protein="Beta-2 adrenergic receptor"),
     _pdb(id="2V64", label="Mad2 conformational dimer", recommendation=["1S2H"], protein="Mad2"),
+    _pdb(id="3C5T", label="GLP-1 receptor ECD–exendin-4", recommendation=["5VAI", "6X18", "7KI0"], protein="Human GLP-1 receptor extracellular domain with exendin-4"),
+    _pdb(id="3EU7", label="PALB2–BRCA2 complex", recommendation=["1IYJ", "1MIU"], protein="PALB2 with BRCA2 peptide"),
+    _pdb(id="3SN6", label="Beta-2 adrenergic receptor–Gs complex", recommendation=["2RH1", "6X18", "7KI0"], protein="Beta-2 adrenergic receptor–Gs protein complex"),
+    _pdb(id="3TLM", label="SERCA Ca2+-ATPase", recommendation=["6LN8", "1JDM"], protein="Bovine sarcoplasmic/endoplasmic reticulum Ca2+-ATPase 1"),
     _pdb(id="4AKE", label="Adenylate kinase (open)", recommendation=["1AKE"], protein="Adenylate kinase"),
-    _pdb(id="4H1W", label="Ca2+-ATPase / Sarcolipin complex", recommendation=["1H8H"], protein="Sarcoplasmic reticulum Ca2+-ATPase in complex with sarcolipin"),
-    _pdb(id="4OBE", label="KRAS", recommendation=["2RH1"], protein="Human KRAS"),
+    _pdb(id="4OBE", label="KRAS", recommendation=["5W22", "6OIM", "6GJ7"], protein="Human KRAS (GDP-bound)"),
+    _pdb(id="4PIG", label="Ubiquitin K11S mutant", recommendation=["1UBQ", "1UBI"], protein="Ubiquitin K11S mutant"),
     _pdb(id="4TIM", label="Triosephosphate isomerase", recommendation=["1TIM"], protein="Triosephosphate isomerase"),
+    _pdb(id="5VAI", label="GLP-1 receptor (cryo-EM)", recommendation=["3C5T", "6X18", "7KI0"], protein="Activated GLP-1 receptor with GLP-1 peptide"),
+    _pdb(id="5W22", label="KRAS WT–GDP", recommendation=["4OBE", "6OIM", "6GJ7"], protein="Human wild-type KRAS with GDP"),
+    _pdb(id="6GJ7", label="KRAS G12D inhibitor complex", recommendation=["4OBE", "5W22", "6OIM"], protein="Human KRAS G12D (GppCp) with inhibitor"),
+    _pdb(id="6LN8", label="SERCA2b (cryo-EM)", recommendation=["3TLM", "1JDM"], protein="Human SERCA2b T1032stop, E2-BeF3 state"),
+    _pdb(id="6OIM", label="KRAS G12C–AMG 510", recommendation=["4OBE", "5W22", "6GJ7"], protein="Human KRAS G12C covalently bound to AMG 510"),
+    _pdb(id="6X18", label="GLP-1 receptor–Gs (GLP-1)", recommendation=["7KI0", "5VAI", "3SN6"], protein="GLP-1 receptor–Gs complex with GLP-1 peptide"),
+    _pdb(id="7KI0", label="GLP-1 receptor–Gs (semaglutide)", recommendation=["6X18", "5VAI", "3SN6"], protein="Semaglutide-bound GLP-1 receptor–Gs complex"),
+    _pdb(id="7T67", label="SARS-CoV-2 spike D614G", recommendation=[], protein="SARS-CoV-2 spike glycoprotein D614G, one RBD up"),
 )

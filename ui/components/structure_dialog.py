@@ -3,7 +3,7 @@ from typing import Callable, Iterable
 import streamlit as st
 
 from services import structures
-from ui.components.viewer import structure_viewer
+from ui.viewer.structure_viewer import structure_viewer
 
 CHIPS_PER_ROW = 4
 CHIPS_PER_ROW_PREVIEW = 2
@@ -83,7 +83,7 @@ def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None) 
 def _model_panel(entry: dict) -> None:
     st.markdown(f"{entry.get('icon', '')}  **{entry['id']}**  \n:small[{short_text(entry.get('label'), 60)}]")
     with st.container(key="sd_viewer"):
-        structure_viewer(**structures.viewer_args(entry), fill=True, height=VIEWER_HEIGHT)
+        structure_viewer(**structures.viewer_args(entry), fill=True, height=VIEWER_HEIGHT, minimal=True)
 
 def _split(entries: dict[str, dict], exclude: str | None, recommended: Iterable[str]):
     pool = {i: e for i, e in entries.items() if i != exclude}

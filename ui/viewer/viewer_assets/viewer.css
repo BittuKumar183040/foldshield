@@ -1,0 +1,298 @@
+html,
+body {
+  margin: 0;
+  overflow: hidden;
+  font:
+    12px/1.35 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+#wrap {
+  --bg: #ffffff;
+  --panel: rgba(255, 255, 255, 0.93);
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --bd: #d1d5db;
+  --accent: #2563eb;
+  display: flex;
+  flex-direction: column;
+  height: __HEIGHT__;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+}
+#wrap {
+  color-scheme: light;                 /* native controls (dropdown lists, scrollbars) follow the theme */
+}
+#wrap.dark {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --panel: rgba(15, 23, 42, 0.93);
+  --fg: #e5e7eb;
+  --muted: #94a3b8;
+  --bd: #334155;
+  --accent: #60a5fa;
+}
+#wrap:fullscreen {
+  height: 100vh !important;
+  border-radius: 0;
+}
+#bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--bd);
+  align-items: center;
+}
+#bar button,
+#bar select {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+#bar button:hover,
+#bar select:hover {
+  border-color: var(--accent);
+}
+#bar button.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+#bar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.sep {
+  width: 1px;
+  height: 18px;
+  background: var(--bd);
+  margin: 0 2px;
+}
+#stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+#v {
+  position: absolute;
+  inset: 0;
+}
+.ov {
+  position: absolute;
+  z-index: 5;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 7px 10px;
+  backdrop-filter: blur(4px);
+}
+#status {
+  top: 8px;
+  left: 8px;
+  pointer-events: none;
+  color: var(--muted);
+  max-width: 55%;
+}
+#info {
+  top: 8px;
+  right: 8px;
+  width: 215px;
+  overflow: auto;
+}
+#legend {
+  bottom: 8px;
+  left: 8px;
+  max-width: 200px;
+  max-height: 55%;
+  overflow: auto;
+}
+#ctrl {
+  bottom: 8px;
+  right: 8px;
+  width: 195px;
+}
+.hd {
+  font-weight: 600;
+  margin: 6px 0 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.m {
+  color: var(--muted);
+}
+.lg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+}
+.lg i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+.grad {
+  height: 9px;
+  border-radius: 4px;
+  margin: 4px 0 2px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 10px;
+}
+.chip {
+  display: inline-block;
+  background: #ff2d95;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0 7px;
+  margin: 1px 2px 1px 0;
+  font-size: 11px;
+}
+#ctrl label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 3px 0;
+}
+#ctrl input[type="range"] {
+  width: 95px;
+}
+#ctrl button {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  padding: 2px 8px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+/* minimal = compact view: the model plus Representation, Reset view, Save image and Fullscreen.
+   Everything else (other toolbar buttons, status/info/legend panels) is hidden. In fullscreen the
+   script removes the "minimal" class, so every control and panel is back. */
+#wrap.minimal {
+  border: none;
+  border-radius: 0;
+}
+#wrap.minimal .full-only,
+#wrap.minimal .ov {
+  display: none !important;
+}
+/* an overlay with no content (e.g. the info panel before anything is selected) takes no space */
+.ov:empty {
+  display: none;
+}
+
+/* ---- icon toolbar ---- */
+#bar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 6px;
+}
+#bar svg,
+#ctrl svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+#bar .sel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 0 0 7px;
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--muted);
+}
+#bar .sel:hover {
+  border-color: var(--accent);
+}
+#bar .sel select {
+  border: none;
+  background-color: transparent;
+  height: 26px;
+  padding: 0 6px 0 0;
+  outline: none;
+}
+/* the opened dropdown list: without these it stays white in the dark theme */
+#bar select,
+#bar select option,
+#bar select optgroup {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+#bar .sel select {
+  background-color: transparent;       /* the label around it already paints --bg */
+}
+#bar .seg {
+  display: inline-flex;
+}
+#bar .seg button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+#bar .seg button:last-child {
+  border-radius: 0 6px 6px 0;
+  margin-left: -1px;
+}
+#ctrl .lb {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+}
+
+/* ---- tooltip ---- */
+#tip {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 6px;
+  padding: 5px 8px;
+  max-width: 230px;
+  font-size: 11px;
+  line-height: 1.35;
+  opacity: 0;
+  transition: opacity 0.12s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+#tip.show {
+  opacity: 1;
+}
+#tip b {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 1px;
+}
