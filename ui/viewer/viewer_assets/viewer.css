@@ -15,7 +15,7 @@ body {
   --fg: #1f2937;
   --muted: #6b7280;
   --bd: #d1d5db;
-  --accent: #2563eb;
+  --accent: #a70000;
   display: flex;
   flex-direction: column;
   height: __HEIGHT__;
@@ -37,7 +37,7 @@ body {
   --fg: #e5e7eb;
   --muted: #94a3b8;
   --bd: #334155;
-  --accent: #60a5fa;
+  --accent: #a70000;
 }
 #wrap:fullscreen {
   height: 100vh !important;
@@ -161,7 +161,7 @@ body {
 }
 .chip {
   display: inline-block;
-  background: #ff2d95;
+  background: #b35555;
   color: #fff;
   border-radius: 10px;
   padding: 0 7px;
