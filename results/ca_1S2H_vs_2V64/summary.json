@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1S2H.pdb",
-    "pdb_query": "input/2V64.pdb",
+    "pdb_ref": "results/1S2H.pdb",
+    "pdb_query": "results/2V64.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1S2H_vs_2V64",
+    "outdir": "results/ca_1S2H_vs_2V64",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

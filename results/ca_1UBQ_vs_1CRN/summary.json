@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1UBQ.pdb",
-    "pdb_query": "input/1CRN.pdb",
+    "pdb_ref": "results/1UBQ.pdb",
+    "pdb_query": "results/1CRN.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1UBQ_vs_1CRN",
+    "outdir": "results/ca_1UBQ_vs_1CRN",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

@@ -1,12 +1,8 @@
 import json
 import streamlit as st
-from ui.components import empty_state, section
-
+from ui.components import section
 
 def render_log(result) -> None:
-    if not result:
-        empty_state("No run yet", "Pipeline output and the raw summary appear here.")
-        return
     if result.error:
         st.error(result.error)
     if result.log.strip():

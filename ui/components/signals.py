@@ -1,4 +1,4 @@
-from ui.components.cards import badge, card_grid, section, stat_card
+from ui.components.cards import badge, card_grid, stat_card
 from ui.config import signal_for
 from ui.html import esc, fmt, render
 from ui.theme import score_color
@@ -32,11 +32,3 @@ def signal_table(per_signal: dict, scores: dict, weights: dict) -> None:
         f'</tr></thead><tbody>{rows}</tbody></table></div>'
     )
 
-
-def signals_panel(fusion: dict) -> None:
-    section("FoldShield++ signals")
-    per_signal = fusion.get("per_signal") or {}
-    scores = fusion.get("signal_scores") or {}
-    weights = fusion.get("weights_used") or {}
-    signal_cards(per_signal, scores, weights)
-    signal_table(per_signal, scores, weights)

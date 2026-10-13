@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1HHO.pdb",
-    "pdb_query": "input/2HHO.pdb",
+    "pdb_ref": "results/1HHO.pdb",
+    "pdb_query": "results/2HHO.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1HHO_vs_2HHO",
+    "outdir": "results/ca_1HHO_vs_2HHO",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

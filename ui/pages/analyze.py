@@ -1,8 +1,11 @@
 import streamlit as st
 from services import state
 from services.pipeline import load_summary_upload, run_pipeline
-from ui.components import AnalyzeInputs, page_header, render_inputs
-from ui.sections import render_log, render_results, render_visuals
+from ui.components import AnalyzeInputs, render_inputs, empty_state
+from ui.components.report import report_download
+from ui.sections.results import baseline_metrics, combined_verdict, perturbation_panel, signals_panel
+from ui.sections.visuals import backbone_3d, entropy_images, signal_charts
+from ui.sections.log import render_log
 
 # Width ratio of results (left) : analysis panel (right). Tweak to taste.
 LAYOUT_RATIO = [3, 2]
@@ -31,13 +34,33 @@ def _handle_actions(inputs: AnalyzeInputs) -> None:
 
 
 def _render_results_tabs(result) -> None:
-    tab_results, tab_visuals, tab_log = st.tabs(["Results", "Visuals", "Log"])
-    with tab_results:
-        render_results(result)
-    with tab_visuals:
-        render_visuals(result)
-    with tab_log:
-        render_log(result)
+    if not result or not result.summary:
+        empty_state("No results yet", "Upload a reference and a query PDB and run the pipeline, or load a saved summary.json.")
+        return
+    summary = result.summary
+    artifacts_dir = result.artifacts_dir
+    fusion = summary.get("fusion") or {}
+    p2 = summary.get("phase2") or {}
+
+    if fusion:
+        combined_verdict(fusion)
+    
+    entropy_images(artifacts_dir)
+
+    backbone_3d(summary)
+    st.divider()
+    signal_charts(summary)
+    st.divider()
+
+
+    if fusion.get("signal_scores") and fusion.get("per_signal"):
+        signals_panel(fusion)
+    if p2:
+        perturbation_panel(p2)
+    baseline_metrics(summary.get("tm_score"), summary.get("rmsd"))
+    report_download(result.summary, artifacts_dir)
+
+    render_log(result)
 
 
 def render() -> None:

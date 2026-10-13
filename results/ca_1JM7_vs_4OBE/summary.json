@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1JM7.pdb",
-    "pdb_query": "input/4OBE.pdb",
+    "pdb_ref": "results/1JM7.pdb",
+    "pdb_query": "results/4OBE.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1JM7_vs_4OBE",
+    "outdir": "results/ca_1JM7_vs_4OBE",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1TIM.pdb",
-    "pdb_query": "input/2RH1.pdb",
+    "pdb_ref": "results/1TIM.pdb",
+    "pdb_query": "results/2RH1.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1TIM_vs_2RH1",
+    "outdir": "results/ca_1TIM_vs_2RH1",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

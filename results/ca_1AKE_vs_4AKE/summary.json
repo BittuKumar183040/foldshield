@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1AKE.pdb",
-    "pdb_query": "input/4AKE.pdb",
+    "pdb_ref": "results/1AKE.pdb",
+    "pdb_query": "results/4AKE.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1AKE_vs_4AKE",
+    "outdir": "results/ca_1AKE_vs_4AKE",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

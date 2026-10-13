@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1IYJ.pdb",
-    "pdb_query": "input/1T15.pdb",
+    "pdb_ref": "results/1IYJ.pdb",
+    "pdb_query": "results/1T15.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1IYJ_vs_1T15",
+    "outdir": "results/ca_1IYJ_vs_1T15",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"

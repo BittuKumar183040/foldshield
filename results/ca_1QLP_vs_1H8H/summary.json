@@ -1,9 +1,9 @@
 {
   "inputs": {
-    "pdb_ref": "input/1QLP.pdb",
-    "pdb_query": "input/1H8H.pdb",
+    "pdb_ref": "results/1QLP.pdb",
+    "pdb_query": "results/1H8H.pdb",
     "mode": "ca",
-    "outdir": "results/benchmark/ca_1QLP_vs_1H8H",
+    "outdir": "results/ca_1QLP_vs_1H8H",
     "keep_hetatm": false,
     "ref_chain_id": "A",
     "query_chain_id": "A"
