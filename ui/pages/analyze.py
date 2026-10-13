@@ -47,7 +47,7 @@ def render() -> None:
             st.rerun()              # switch to the results layout immediately
         return
 
-    page_header("Analyze", "Compare a reference and a query structure.")
+    # page_header("Analyze", "Compare a reference and a query structure.")
     with st.expander("⚙️ Perform New Analysis", expanded=False):
         _handle_actions(render_inputs())
     _render_results_tabs(state.get_result())   # re-read: may be a new result

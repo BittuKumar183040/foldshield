@@ -47,7 +47,7 @@ def _signal_charts(summary: dict) -> None:
 
 def render_visuals(result) -> None:
     if not result or not result.summary:
-        empty_state("Nothing to show yet", "Run the pipeline or load a summary.json to see images and charts.")
+        # empty_state("Nothing to show yet", "Run the pipeline or load a summary.json to see images and charts.")
         return
     _entropy_images(result.artifacts_dir)
     _backbone_3d(result.summary)

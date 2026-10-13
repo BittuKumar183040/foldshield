@@ -123,10 +123,6 @@ def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None) 
             _chip(col, key, entry, entry["id"] == active)
 
 
-def _model_panel(entry: dict) -> None:
-    st.markdown(f"{entry.get('icon', '')}  **{entry['id']}**  \n:small[{short_text(entry.get('label'), 60)}]")
-    with st.container(key="sd_viewer"):
-        structure_viewer(**structures.viewer_args(entry), fill=True, height=LIST_HEIGHT, minimal=True)
 
 
 def _split(entries: dict[str, dict], exclude: str | None, recommended: Iterable[str]):
@@ -155,7 +151,7 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
                     _chip_grid(key, rest, per_row, preview_id)
         if right is not None:
             with right:
-                _model_panel(entry)
+                model_panel(entry)
 
         _, confirm = st.columns([3, 1])
         if confirm.button("Choose", type="primary", key=f"sd_confirm_{key}", disabled=entry is None,
@@ -163,6 +159,10 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
             on_choose(entry["id"])
             st.rerun()
 
+def model_panel(entry: dict, key: str = "sd_viewer") -> None:  #{'id': '1CSH', 'label': 'Citrate synthase', 'recommendation': ['1AKE', '4AKE'], 'icon': '🧬', 'path': 'pdb files/1CSH.pdb', 'details': {'Protein': 'Citrate synthase'}}
+    st.markdown(f"{entry.get('icon', '')}  **{entry['id']}**  \n:small[{short_text(entry.get('label'), 60)}]")
+    with st.container(key=key):
+        structure_viewer(**structures.viewer_args(entry), fill=True, height=LIST_HEIGHT, minimal=True)
 
 def open_structure_dialog(*, key: str, title: str, entries: dict[str, dict],
                           exclude: str | None = None, recommended: Iterable[str] = (),

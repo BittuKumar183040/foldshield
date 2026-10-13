@@ -16,7 +16,8 @@ from services import structures
 from services.inputs import PdbInput, detect_chains
 from static.samples import PDBs
 from ui.components.cards import section
-from ui.components.structure_dialog import details_text, open_structure_dialog, short_text
+from ui.components.structure_dialog import details_text, model_panel, open_structure_dialog, short_text
+from ui.viewer.structure_viewer import structure_viewer
 
 # slot -> (title, data)
 SLOTS = {"ref": ("Reference", PDBs), "query": ("Query", PDBs)}
@@ -81,7 +82,6 @@ def _open_chooser(slot: str) -> None:
         on_choose=_chosen,
     )
 
-
 # --------------------------------------------------------------------------- cards
 def _chain_picker(label: str, slot: str, pdb: PdbInput) -> str:
     key = f"chain_{slot}_{pdb.fp}"          # new structure -> fresh widget state
@@ -105,9 +105,7 @@ def _structure_card(slot: str) -> tuple[PdbInput, str]:
             _open_chooser(slot)
 
         if entry:
-            st.markdown(f"{entry['icon']}  **{entry['id']}**  \n:small[{short_text(entry.get('label'), 60)}]")
-            if details_text(entry):
-                st.caption(details_text(entry))
+            model_panel(entry, key=f"sd_viewer_{slot}")
         else:
             st.caption("Nothing selected yet.")
         if pdb.error:
@@ -118,8 +116,8 @@ def _structure_card(slot: str) -> tuple[PdbInput, str]:
 
 # --------------------------------------------------------------------------- panel
 def render_inputs() -> AnalyzeInputs:
-    with st.container(border=True):
-        section("Inputs", "Choose a reference and a query structure, pick their chains, then run.")
+    with st.container():
+        section("Run Analysis", "Choose a reference and a query structure, pick their chains, then run.")
 
         col_ref, col_query = st.columns(2)
         with col_ref:
