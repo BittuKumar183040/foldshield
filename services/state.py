@@ -11,7 +11,7 @@ def get_result() -> RunResult | None:
     return st.session_state.get(_RESULT)
 
 
-def set_result(result: RunResult) -> None:
+def set_result(result: RunResult | None) -> None:
     st.session_state[_RESULT] = result
 
 

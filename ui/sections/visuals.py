@@ -19,28 +19,48 @@ def entropy_images(outdir: str) -> None:
         col.image(path, caption=caption, use_container_width=True)
 
 
-def backbone_3d(summary: dict) -> None:
+def backbone_3d(summary: dict, fill: bool = False) -> bool:
+    """Draw the 3D backbone. Returns False when the summary has no 3D data.
+
+    fill=True stretches the chart to its container (workbench stage) and keeps the
+    camera across reruns (e.g. when a popup opens); no section header is drawn.
+    """
     keys = ("tokens_ref", "tokens_query", "ca_coords_ref", "ca_coords_query")
     if not all(k in summary for k in keys):
-        return
-    section("UL-DSL tokenized backbone (3D)")
+        return False
+    if not fill:
+        section("UL-DSL tokenized backbone (3D)")
     fig = plot_dual_pdb_token_backbones_plotly_separate(
         np.array(summary["ca_coords_ref"]), summary["tokens_ref"],
         np.array(summary["ca_coords_query"]), summary["tokens_query"])
-    st.plotly_chart(fig, use_container_width=True)
+    if not fill:
+        st.plotly_chart(fig, use_container_width=True)
+        return True
+    fig.update_layout(autosize=True, uirevision="fs-stage")
+    try:
+        st.plotly_chart(fig, width="stretch", height="stretch")
+    except TypeError:       # older Streamlit: no height="stretch"
+        fig.update_layout(height=700)
+        st.plotly_chart(fig, use_container_width=True)
+    return True
 
 
-def signal_charts(summary: dict) -> None:
+def signal_charts(summary: dict, stacked: bool = False, height: int | None = None) -> None:
+    """stacked=True puts bar over radar (narrow panel); height sets both chart heights in px."""
     fusion = summary.get("fusion") or {}
     scores = fusion.get("signal_scores") or {}
     if not scores:
         st.info("Phase 2 signal scores not found in summary.")
         return
     combined = float(summary.get("combined_similarity") or fusion.get("combined_score") or 0)
-    left, right = st.columns(2)
+    bar, radar = signal_bar_fig(scores, combined), signal_radar_fig(scores)
+    if height:
+        bar.update_layout(height=height)
+        radar.update_layout(height=height)
+    left, right = (st.container(), st.container()) if stacked else st.columns(2)
     with left:
         section("Signal scores")
-        st.plotly_chart(signal_bar_fig(scores, combined), use_container_width=True)
+        st.plotly_chart(bar, use_container_width=True)
     with right:
         section("Signal profile")
-        st.plotly_chart(signal_radar_fig(scores), use_container_width=True)
+        st.plotly_chart(radar, use_container_width=True)
