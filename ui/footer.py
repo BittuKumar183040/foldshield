@@ -1,18 +1,10 @@
-"""Site footer, shown at the bottom of every page.
-
-Add it once, in app.py, right after the router runs:
-
-    build_navigation().run()      # runs the current page
-    render_footer()               # then the footer, below it
-
-It reads the pages from ui/route.py, so a new Route shows up in the footer automatically
-(routes with hidden=True are skipped). Edit the constants below to change the text and links.
-"""
+"""Shared, theme-native footer for the public-facing pages."""
 from datetime import date
 
 import streamlit as st
 
 from ui.route import BRAND_ICON, ROUTES, link
+from ui.components.submission import SUBMISSION_URL
 
 BRAND = "FoldShield++"
 TAGLINE = ("Detects mutation impact, fold switching and conformational shifts using "
@@ -27,11 +19,11 @@ EXTERNAL_LINKS: tuple[tuple[str, str], ...] = (
 
 
 def _brand_html() -> str:
-    # inline styles only, so it looks right in light and dark themes
+    # Keep colors inherited from Streamlit so the footer follows light and dark themes.
     return f"""
-    <div style="display:flex;align-items:center;gap:.6rem">
-      <img src="{BRAND_ICON}" alt="" style="height:2rem;width:2rem;object-fit:contain">
-      <span style="font-size:1.15rem;font-weight:700;letter-spacing:-.01em">{BRAND}</span>
+    <div style="display:flex;align-items:center;gap:.65rem;margin:.25rem 0 .75rem">
+      <img src="{BRAND_ICON}" alt="" style="height:2.25rem;width:2.25rem;object-fit:contain">
+      <span style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">{BRAND}</span>
     </div>
     """
 
@@ -40,24 +32,56 @@ def _heading(text: str) -> None:
     st.markdown(f"**{text}**")
 
 
-def render_footer() -> None:
-    st.divider()
+def _footer_css() -> str:
+    background = st.get_option("theme.backgroundColor") or "Canvas"
+    return f"""
+    <style>
+    .st-key-fs-site-footer {{
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      margin: 2.5rem 0 0 !important;
+      padding: 2rem 0 2.5rem !important;
+      background: {background};
+    }}
+    </style>
+    """
 
-    about, pages, more = st.columns([2.2, 1, 1])        # the last column stays empty without EXTERNAL_LINKS
-    with about:
-        st.html(_brand_html())
-        st.caption(TAGLINE)
 
-    with pages:
-        _heading("Pages")
-        for r in ROUTES:
-            if not r.hidden:
-                link(r.key, "Home" if r.default else None)
+def render_footer(*, show_model_request: bool = True) -> None:
+    st.markdown(_footer_css(), unsafe_allow_html=True)
+    with st.container(key="fs-site-footer"):
+        has_more = show_model_request or bool(EXTERNAL_LINKS)
+        ratios = [2.3, 1, 1.6] if has_more else [2.3, 1]
+        columns = st.columns(ratios, gap="large", vertical_alignment="top")
+        about, pages = columns[:2]
+        with about:
+            st.html(_brand_html())
+            st.caption(TAGLINE)
 
-    if EXTERNAL_LINKS:
-        with more:
-            _heading("Links")
-            for label, url in EXTERNAL_LINKS:
-                st.markdown(f"[{label}]({url})")
+        with pages:
+            _heading("Explore")
+            for route in ROUTES:
+                if not route.hidden:
+                    link(route.key, "Home" if route.default else None)
 
-    st.caption(f"© {date.today().year} {BRAND}")
+        if has_more:
+            with columns[2]:
+                if show_model_request:
+                    _heading("Need another structure?")
+                    st.caption("Request a protein model to add it to your FoldShield comparison workflow.")
+                    st.link_button(
+                        "Request a model",
+                        SUBMISSION_URL,
+                        icon=":material/add:",
+                        key="footer_request_model",
+                        width="stretch",
+                    )
+                if EXTERNAL_LINKS:
+                    _heading("Links" if not show_model_request else "More")
+                    for label, url in EXTERNAL_LINKS:
+                        st.markdown(f"[{label}]({url})")
+
+        left, right = st.columns([1, 1])
+        left.caption(f"© {date.today().year} {BRAND}")
+        right.caption("Protein structure comparison and visualization")

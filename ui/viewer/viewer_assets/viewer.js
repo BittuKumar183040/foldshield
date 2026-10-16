@@ -16,10 +16,10 @@ function hsl(h, s, l) {
 
 /* ---------------- state ---------------- */
 const S = {
-  rep: CFG.style, col: CFG.colorBy, spin: CFG.autoRotate, speed: 0.3, wire: false, axes: false, legend: true,
+  rep: CFG.style, col: CFG.colorBy, spin: CFG.autoRotate, speed: 0.3, wire: false, axes: true, legend: true,
   lig: true, water: false, pocket: false, slice: false, depth: 0, thick: 100, opacity: 0.6,
   mode: "select", dark: CFG.dark,
-  sel: {}, meas: [], mShapes: [], mLabels: [], dists: [], axShapes: [], axLabels: [],
+  sel: {}, meas: [], mShapes: [], mLabels: [], dists: [],
   chains: [], range: {}, bmin: 0, bmax: 1, hasSS: false, hasLig: false, ligNames: [],
   nAtoms: 0, nProt: 0, nRes: 0, radius: 30, min: {x:0,y:0,z:0}, max: {x:0,y:0,z:0},
   view0: null, surfId: null, base: "Loading…", note: ""
@@ -273,8 +273,9 @@ function renderInfo(a) {
   }
   const keys = Object.keys(S.sel);
   if (keys.length) {
-    h += `<div class="hd">Selected (${keys.length})</div>` +
-         keys.slice(0, 12).map(k => `<span class="chip">${esc(S.sel[k].text)}</span>`).join("") +
+    h += `<div class="selection-head"><div class="hd">Selected (${keys.length})</div>` +
+         `<button class="selection-clear" type="button" data-clear-selections>Clear</button></div>` +
+         keys.slice(0, 12).map(k => `<button class="chip" type="button" data-remove-selection="${esc(k)}" aria-label="Remove ${esc(S.sel[k].text)}">${esc(S.sel[k].text)} <span aria-hidden="true">×</span></button>`).join("") +
          (keys.length > 12 ? ` +${keys.length - 12}` : "");
   }
   if (S.dists.length) {
@@ -282,6 +283,15 @@ function renderInfo(a) {
   }
   $("info").innerHTML = h;                      // "" when there is nothing to show: the CSS hides the empty panel
 }
+
+$("info").addEventListener("click", event => {
+  if (event.target.closest("[data-clear-selections]")) {
+    clearSelectionAndReset();
+    return;
+  }
+  const remove = event.target.closest("[data-remove-selection]");
+  if (remove) removeResidueSelection(remove.getAttribute("data-remove-selection"));
+});
 
 /* ---------------- legend ---------------- */
 function renderLegend() {
@@ -332,12 +342,19 @@ function applyStyle() {
   if (S.lig && S.hasLig) v.addStyle(SEL_LIG, { stick: { colorfunc: ligColor, radius: 0.2 }, sphere: { colorfunc: ligColor, scale: 0.25 } });
   if (S.water) v.addStyle(SEL_WAT, { sphere: { color: 0x60a5fa, radius: 0.35, opacity: 0.8 } });
   if (S.pocket && S.hasLig) v.addStyle({ within: { distance: 5, sel: SEL_LIG }, hetflag: false, byres: true }, { stick: { colorfunc: cf, radius: 0.18 } });
+  Object.values(S.sel).forEach(o => v.addStyle(
+    { within: { distance: 7, sel: { chain: o.chain, resi: o.resi } }, hetflag: false, byres: true },
+    { stick: { colorfunc: cf, radius: 0.13 } }
+  ));
   Object.values(S.sel).forEach(o => v.addStyle({ chain: o.chain, resi: o.resi }, { stick: { color: 0xff2d95, radius: 0.3 } }));
   v.render();
 }
 
 let surfTok = 0;
-function surfStyle() { return { opacity: S.opacity, colorfunc: COLORS[S.col] || COLORS.spectrum, wireframe: S.wire }; }
+function surfStyle() {
+  const opacity = Object.keys(S.sel).length ? Math.min(S.opacity, 0.18) : S.opacity;
+  return { opacity, colorfunc: COLORS[S.col] || COLORS.spectrum, wireframe: S.wire };
+}
 function applySurface() {
   surfTok++; const tok = surfTok;
   v.removeAllSurfaces(); S.surfId = null;
@@ -358,22 +375,56 @@ function applySpin() {
 }
 
 function applyAxes() {
-  S.axShapes.forEach(s => v.removeShape(s)); S.axLabels.forEach(l => v.removeLabel(l));
-  S.axShapes = []; S.axLabels = [];
-  if (S.axes) {
-    const r = S.radius, len = Math.max(8, r * 0.45), rad = Math.max(0.15, r * 0.01);
-    const o = { x: S.min.x - r * 0.05, y: S.min.y - r * 0.05, z: S.min.z - r * 0.05 };
-    [["X", 0xef4444, [len,0,0]], ["Y", 0x22c55e, [0,len,0]], ["Z", 0x3b82f6, [0,0,len]]].forEach(([n, c, d]) => {
-      const e = { x: o.x + d[0], y: o.y + d[1], z: o.z + d[2] };
-      S.axShapes.push(v.addArrow({ start: o, end: e, radius: rad, radiusRatio: 2.2, mid: 0.8, color: c }));
-      S.axLabels.push(v.addLabel(n, { position: { x: e.x + d[0] * 0.12, y: e.y + d[1] * 0.12, z: e.z + d[2] * 0.12 },
-        fontSize: 14, fontColor: hexStr(c), showBackground: false, backgroundOpacity: 0, inFront: true }));
-    });
-  }
-  v.render();
+  $("orientation").style.display = S.axes ? "grid" : "none";
+  updateOrientation();
 }
 
+function updateOrientation(view) {
+  const q = (view || v.getView()).slice(4, 8);
+  const [qx, qy, qz, qw] = q;
+  const center = 28, scale = 19;
+  const axes = [
+    ["X", [1, 0, 0]], ["Y", [0, 1, 0]], ["Z", [0, 0, 1]]
+  ];
+  axes.forEach(([name, basis]) => {
+    const [x, y, z] = basis;
+    const tx = 2 * (qy * z - qz * y);
+    const ty = 2 * (qz * x - qx * z);
+    const tz = 2 * (qx * y - qy * x);
+    const rx = x + qw * tx + qy * tz - qz * ty;
+    const ry = y + qw * ty + qz * tx - qx * tz;
+    const rz = z + qw * tz + qx * ty - qy * tx;
+    const x2 = center + rx * scale;
+    const y2 = center - ry * scale;
+    const line = $("axis" + name);
+    const label = $("axisLabel" + name);
+    line.setAttribute("x2", x2.toFixed(2));
+    line.setAttribute("y2", y2.toFixed(2));
+    line.style.opacity = String(0.35 + 0.65 * ((rz + 1) / 2));
+    label.setAttribute("x", (center + rx * (scale + 5)).toFixed(2));
+    label.setAttribute("y", (center - ry * (scale + 5) + 3).toFixed(2));
+    label.setAttribute("text-anchor", rx < -0.2 ? "end" : rx > 0.2 ? "start" : "middle");
+    label.style.opacity = line.style.opacity;
+  });
+}
+v.setViewChangeCallback(updateOrientation);
+
 /* ---------------- interaction ---------------- */
+function focusSelection() {
+  const residues = Object.values(S.sel);
+  if (!residues.length) {
+    v.zoomTo({}, 600);
+    return;
+  }
+  const localStructure = {
+    or: residues.map(o => ({
+      within: { distance: 8, sel: { chain: o.chain, resi: o.resi } },
+      hetflag: false
+    }))
+  };
+  v.zoomTo(localStructure, 600);
+}
+
 function toggleResidue(a) {
   const key = a.chain + ":" + a.resi + (a.icode || "");
   if (S.sel[key]) { if (S.sel[key].label) v.removeLabel(S.sel[key].label); delete S.sel[key]; }
@@ -383,7 +434,7 @@ function toggleResidue(a) {
       backgroundColor: "#ff2d95", backgroundOpacity: 0.9, borderThickness: 0, inFront: true });
     S.sel[key] = { chain: a.chain, resi: a.resi, text, label };
   }
-  applyStyle(); renderLegend(); renderInfo(a);
+  applyStyle(); applySurface(); focusSelection(); renderLegend(); renderInfo(a);
 }
 
 function measureClick(a) {
@@ -405,20 +456,37 @@ function clearAll() {
   Object.values(S.sel).forEach(o => o.label && v.removeLabel(o.label)); S.sel = {};
   S.mShapes.forEach(s => v.removeShape(s)); S.mLabels.forEach(l => v.removeLabel(l));
   S.mShapes = []; S.mLabels = []; S.meas = []; S.dists = [];
-  applyStyle(); renderLegend(); renderInfo(null);
+  applyStyle(); applySurface(); v.zoomTo({}, 600); renderLegend(); renderInfo(null);
+}
+
+function clearSelectionAndReset() {
+  if (Object.keys(S.sel).length) {
+    Object.values(S.sel).forEach(o => o.label && v.removeLabel(o.label));
+    S.sel = {};
+    applyStyle(); applySurface(); renderLegend(); renderInfo(null);
+  }
+  v.zoomTo({}, 600);
+}
+
+function removeResidueSelection(key) {
+  const selected = S.sel[key];
+  if (!selected) return;
+  if (selected.label) v.removeLabel(selected.label);
+  delete S.sel[key];
+  applyStyle(); applySurface(); focusSelection(); renderLegend(); renderInfo(null);
 }
 
 /* Must run AFTER the model is loaded: setClickable/setHoverable only flag atoms that already exist.
-   (Registering them before addModel/download was why clicks did nothing.)
-   In the minimal view it is skipped at load and enabled the first time fullscreen is entered. */
+   (Registering them before addModel/download was why clicks did nothing.) */
 const isMinimal = () => wrap.classList.contains("minimal");
 let interactive = false;
+let atomClickHandled = false;
 function enableInteraction() {
   if (interactive) return;
   interactive = true;
   v.setClickable({}, true, function (atom) {
-    if (isMinimal()) return;
-    if (S.mode === "measure") measureClick(atom); else toggleResidue(atom);
+    atomClickHandled = true;
+    if (S.mode === "measure" && !isMinimal()) measureClick(atom); else toggleResidue(atom);
   });
   v.setHoverable({}, true,
     function (atom) {
@@ -430,12 +498,37 @@ function enableInteraction() {
   );
 }
 
+// Defer until the viewer's own click handler has had a chance to mark atom hits.
+// Clicking empty canvas clears the focused residue and restores the full model framing.
+$("stage").addEventListener("click", event => {
+  if (event.target.closest(".ov, #orientation")) return;
+  setTimeout(() => {
+    const hitAtom = atomClickHandled;
+    const dragged = pointerDragged;
+    atomClickHandled = false;
+    pointerDragged = false;
+    if (!hitAtom && !dragged) clearSelectionAndReset();
+  }, 0);
+});
+
 /* pause auto-rotate while the user drags, resume shortly after */
 let resumeT = null;
-$("stage").addEventListener("pointerdown", () => { if (S.spin) { v.spin(false); clearTimeout(resumeT); } });
+let pointerOrigin = null;
+let pointerDragged = false;
+$("stage").addEventListener("pointerdown", event => {
+  pointerOrigin = { x: event.clientX, y: event.clientY };
+  pointerDragged = false;
+  if (S.spin) { v.spin(false); clearTimeout(resumeT); }
+});
+window.addEventListener("pointermove", event => {
+  if (!pointerOrigin || pointerDragged) return;
+  pointerDragged = Math.hypot(event.clientX - pointerOrigin.x, event.clientY - pointerOrigin.y) > 5;
+});
 window.addEventListener("pointerup", () => {
+  pointerOrigin = null;
   if (S.spin) { clearTimeout(resumeT); resumeT = setTimeout(() => { if (S.spin) v.spin("y", S.speed); }, 1500); }
 });
+window.addEventListener("pointercancel", () => { pointerOrigin = null; });
 
 /* ---------------- toolbar wiring ---------------- */
 $("rep").onchange = e => { S.rep = e.target.value; applyStyle(); applySurface(); renderLegend(); };
@@ -485,8 +578,8 @@ $("bFull").onclick = () => {
 };
 new ResizeObserver(() => { v.resize(); v.render(); }).observe($("stage"));
 
-/* Minimal view only applies outside fullscreen. In fullscreen every control and panel is shown and
-   atoms can be clicked; leaving fullscreen goes back to the compact view and clears selections. */
+/* Minimal view keeps residue selection active; fullscreen adds the extended controls and panels.
+   Leaving fullscreen returns to the compact view and clears selections. */
 function syncFullscreen() {
   if (!CFG.minimal) return;
   const full = document.fullscreenElement === wrap || document.webkitFullscreenElement === wrap;
@@ -544,11 +637,10 @@ function onLoaded() {
   S.min = { x: ext[0][0], y: ext[0][1], z: ext[0][2] }; S.max = { x: ext[1][0], y: ext[1][1], z: ext[1][2] };
   S.radius = Math.max(5, Math.hypot(S.max.x - S.min.x, S.max.y - S.min.y, S.max.z - S.min.z) / 2);
 
-  S.base = (CFG.pdbId ? CFG.pdbId.toUpperCase() : "Custom structure") +
-           `  ·  ${S.nAtoms.toLocaleString()} atoms  ·  ${nRes} residues  ·  ${S.chains.length || 1} chain(s)` +
+  S.base = `Structure  ·  ${S.nAtoms.toLocaleString()} atoms  ·  ${nRes} residues  ·  ${S.chains.length || 1} chain(s)` +
            (S.hasLig ? `  ·  ligand: ${S.ligNames.slice(0, 3).join(", ")}` : "");
   setStatus();
-  if (!isMinimal()) enableInteraction();
+  enableInteraction();
   applyStyle(); applySurface();
   v.zoomTo(); S.view0 = v.getView();
   applyAxes(); applySpin(); renderLegend(); renderInfo(null); v.render();

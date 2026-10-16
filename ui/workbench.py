@@ -147,8 +147,8 @@ def render_dock(tools: list[Tool]) -> None:
     with st.container(key=DOCK_KEY):
         for t in tools:
             if t.mode == "action":
-                st.button(t.label, key=f"fs-tool-{t.key}", icon=t.icon, help=t.title, on_click=t.render)
-            elif st.button(t.label, key=f"fs-tool-{t.key}", icon=t.icon, help=t.title):
+                st.button(t.label, key=f"fs-tool-{t.key}", icon=t.icon, help=None, on_click=t.render)
+            elif st.button(t.label, key=f"fs-tool-{t.key}", icon=t.icon, help=None):
                 to_open = t
     if to_open:
         st.dialog(to_open.title or to_open.label, width=to_open.width)(_guarded(to_open.render))()

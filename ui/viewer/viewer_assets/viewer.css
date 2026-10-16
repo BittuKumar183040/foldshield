@@ -114,11 +114,26 @@ body {
 }
 #legend {
   bottom: 8px;
-  left: 8px;
+  right: 8px;
   max-width: 200px;
   max-height: 55%;
   overflow: auto;
 }
+#orientation {
+  position: absolute;
+  z-index: 5;
+  left: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  color: var(--fg);
+  pointer-events: none;
+}
+#orientation svg { width: 80px; height: 80px; overflow: visible; }
+#orientation line { stroke-width: 3; stroke-linecap: round; }
+#orientation text { fill: var(--fg); font: 700 9px system-ui, sans-serif; }
 #ctrl {
   bottom: 8px;
   right: 8px;
@@ -160,13 +175,36 @@ body {
   font-size: 10px;
 }
 .chip {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: #b35555;
   color: #fff;
   border-radius: 10px;
-  padding: 0 7px;
+  padding: 2px 7px;
   margin: 1px 2px 1px 0;
   font-size: 11px;
+  border: 0;
+  font: inherit;
+  font-size: 11px;
+}
+button.chip { cursor: pointer; }
+button.chip:hover { filter: brightness(1.1); }
+.selection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.selection-head .hd { margin-block: 6px 3px; }
+.selection-clear {
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--bd);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font: inherit;
+  cursor: pointer;
 }
 #ctrl label {
   display: flex;
@@ -203,6 +241,9 @@ body {
 /* an overlay with no content (e.g. the info panel before anything is selected) takes no space */
 .ov:empty {
   display: none;
+}
+#wrap.minimal #info:not(:empty) {
+  display: block !important;
 }
 
 /* ---- icon toolbar ---- */

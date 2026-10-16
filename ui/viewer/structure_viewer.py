@@ -53,14 +53,14 @@ def _streamlit_is_dark() -> bool:
         return False
 
 def structure_viewer(*, pdb_id: str | None = None, pdb_text: str | None = None, height: int = 620,
-                     fill: bool = False, auto_rotate: bool = True, minimal: bool = False,
+                     fill: bool = False, auto_rotate: bool | None = None, minimal: bool = False,
                      style: str = "cartoon", color_by: str = "spectrum", dark: bool | None = None,
                      fmt: str = "pdb") -> None:
     """Render a structure in the 3Dmol viewer.
 
-    minimal=True gives a compact view: the model plus four controls (Representation, Reset view,
-    Save image, Fullscreen), with no side panels. Fullscreen switches to the full toolbar and
-    panels, and leaving fullscreen returns to the compact view.
+    minimal=True gives a compact view with no side panels. Fullscreen switches to the full toolbar
+    and panels; leaving fullscreen returns to the compact view. Auto-rotation defaults on in
+    minimal mode and off otherwise. Set auto_rotate to override that default.
 
     dark=None (default) follows the Streamlit theme from the very first paint; pass True/False to force it.
     """
@@ -73,7 +73,7 @@ def structure_viewer(*, pdb_id: str | None = None, pdb_text: str | None = None, 
         "pdbId": str(pdb_id) if (pdb_id and not pdb_text) else None,
         "pdbText": pdb_text or None,
         "fmt": fmt,
-        "autoRotate": bool(auto_rotate),
+        "autoRotate": bool(minimal) if auto_rotate is None else bool(auto_rotate),
         "minimal": bool(minimal),
         "style": style if style in _STYLES else "cartoon",
         "colorBy": color_by if color_by in _COLORS else "spectrum",

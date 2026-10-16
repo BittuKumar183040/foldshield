@@ -16,8 +16,8 @@ from services import structures
 from services.inputs import PdbInput, detect_chains
 from static.samples import PDBs
 from ui.components.cards import section
-from ui.components.structure_dialog import details_text, model_panel, open_structure_dialog, short_text
-from ui.viewer.structure_viewer import structure_viewer
+from ui.components.submission import SUBMISSION_URL
+from ui.components.structure_dialog import model_panel, open_structure_dialog
 
 # slot -> (title, data)
 SLOTS = {"ref": ("Reference", PDBs), "query": ("Query", PDBs)}
@@ -101,7 +101,7 @@ def _structure_card(slot: str) -> tuple[PdbInput, str]:
     with st.container(border=True):
         head, action = st.columns([3, 1.2], vertical_alignment="center")
         head.markdown(f"**{title}**")
-        if action.button("Choose", key=f"analyze_toggle_{slot}", use_container_width=True):
+        if action.button("Choose", key=f"analyze_toggle_{slot}", width="stretch"):
             _open_chooser(slot)
 
         if entry:
@@ -117,7 +117,17 @@ def _structure_card(slot: str) -> tuple[PdbInput, str]:
 # --------------------------------------------------------------------------- panel
 def render_inputs() -> AnalyzeInputs:
     with st.container():
-        section("Run Analysis", "Choose a reference and a query structure, pick their chains, then run.")
+        heading, request = st.columns([3.5, 1.5], vertical_alignment="center")
+        with heading:
+            section("Run Analysis", "Choose a reference and a query structure, pick their chains, then run.")
+        with request:
+            st.link_button(
+                "Request Model",
+                SUBMISSION_URL,
+                icon=":material/add:",
+                key="analyze_request_model",
+                width="stretch",
+            )
 
         col_ref, col_query = st.columns(2)
         with col_ref:
@@ -125,17 +135,20 @@ def render_inputs() -> AnalyzeInputs:
         with col_query:
             query, query_chain = _structure_card("query")
 
-        opt_mode, opt_het, opt_run = st.columns([2, 1.5, 1.5], vertical_alignment="bottom")
+        opt_mode, opt_het = st.columns([2, 1.5], vertical_alignment="bottom")
         with opt_mode:
             mode = st.radio( "Coordinate mode", ["ca", "sequence"], index=0, horizontal=True, format_func=lambda x: "CA" if x == "ca" else "Sequence", )
         with opt_het:
             keep_hetatm = st.checkbox("Keep HETATM", value=False)
-        with opt_run:
+
+        _, run_action = st.columns([4, 1.5], vertical_alignment="center")
+        with run_action:
             ready = ref.ready and query.ready
-            run = st.button("Run pipeline", type="primary", use_container_width=True,
+            run = st.button("Run pipeline", type="primary", width="stretch",
                             disabled=not ready,
                             help=None if ready else "Choose a reference and a query structure first.")
 
+        st.divider()
         with st.expander("Load a saved run", expanded=True):
             summary_upload = st.file_uploader("summary.json", type=["json"], key="upload_summary", width="stretch", help="Load a saved run's summary.json to view its results and visuals.")
 

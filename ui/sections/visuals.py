@@ -16,7 +16,7 @@ def entropy_images(outdir: str) -> None:
         section("Entropy")
         return
     for col, (path, caption) in zip(st.columns(len(found)), found):
-        col.image(path, caption=caption, use_container_width=True)
+        col.image(path, caption=caption, width="stretch")
 
 
 def backbone_3d(summary: dict, fill: bool = False) -> bool:
@@ -34,14 +34,14 @@ def backbone_3d(summary: dict, fill: bool = False) -> bool:
         np.array(summary["ca_coords_ref"]), summary["tokens_ref"],
         np.array(summary["ca_coords_query"]), summary["tokens_query"])
     if not fill:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         return True
     fig.update_layout(autosize=True, uirevision="fs-stage")
     try:
         st.plotly_chart(fig, width="stretch", height="stretch")
     except TypeError:       # older Streamlit: no height="stretch"
         fig.update_layout(height=700)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     return True
 
 
@@ -60,7 +60,7 @@ def signal_charts(summary: dict, stacked: bool = False, height: int | None = Non
     left, right = (st.container(), st.container()) if stacked else st.columns(2)
     with left:
         section("Signal scores")
-        st.plotly_chart(bar, use_container_width=True)
+        st.plotly_chart(bar, width="stretch")
     with right:
         section("Signal profile")
-        st.plotly_chart(radar, use_container_width=True)
+        st.plotly_chart(radar, width="stretch")

@@ -28,8 +28,8 @@ class Route:
 
 ROUTES = (
     Route("home",     "FoldShield++", "", "ui.pages.home", default=True, brand=True),
-    Route("analyze",  "Analyze",  "🧪", "ui.pages.analyze"),
-    Route("proteins", "Proteins", "🧬", "ui.pages.proteins")
+    Route("analyze",  "Analyze",  ":material/science:", "ui.pages.analyze"),
+    Route("proteins", "Proteins", ":material/biotech:", "ui.pages.proteins")
 )
 
 _PAGES: dict = {}             # key -> st.Page (refreshed on every run)

@@ -24,6 +24,6 @@ def report_download(summary: dict, outdir: str) -> None:
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, "rb") as f:
             st.download_button("Download PDF report", f.read(), file_name="foldshield_report.pdf",
-                               mime="application/pdf", use_container_width=True)
+                               mime="application/pdf", width="stretch")
     else:
         st.info("The PDF report is created when the pipeline runs.")

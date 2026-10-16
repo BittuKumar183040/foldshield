@@ -57,10 +57,11 @@ def table() -> pd.DataFrame:
     for e in PDBs.values():
         row = {"ID": e["id"], "Label": e.get("label") or ""}
         row.update(e.get("details", {}))             # Protein, plus any keys you add later
-        row["Recommended"] = ", ".join(r for r in e.get("recommendation", []) if r)
+        row["Recommended Compression"] = ", ".join(r for r in e.get("recommendation", []) if r)
         rows.append(row)
     df = pd.DataFrame(rows).fillna("")
-    return df[[c for c in df.columns if c != "Recommended"] + ["Recommended"]]
+    columns = ["ID", "Label", "Protein", "Organism", "Method", "Resolution (Å)", "RCSB link", "Recommended Compression"]
+    return df[[column for column in columns if column in df.columns]]
 
 
 def search(df: pd.DataFrame, query: str = "") -> pd.DataFrame:

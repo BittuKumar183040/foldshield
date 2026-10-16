@@ -41,7 +41,7 @@
       <span class="sep full-only"></span>
       <button id="bSpin" class="full-only"   aria-label="Spin"      data-label="Spin"      data-tip="Auto-rotate|Spin the model around the vertical axis. Pauses while you drag."><i data-lucide="refresh-cw"></i></button>
       <button id="bWire" class="full-only"   aria-label="Wireframe" data-label="Wire"      data-tip="Wireframe|Overlay the atom bonds on the model, or turn the surface into a mesh, to see inside."><i data-lucide="grid-3x3"></i></button>
-      <button id="bAxes" class="full-only"   aria-label="Axes"      data-label="Axes"      data-tip="XYZ axes|Show X (red), Y (green) and Z (blue) axes at the model corner."><i data-lucide="axis-3d"></i></button>
+      <button id="bAxes" class="full-only"   aria-label="Axes"      data-label="Axes"      data-tip="XYZ axes|Show or hide the fixed global axis indicator."><i data-lucide="axis-3d"></i></button>
       <button id="bLegend" class="full-only" aria-label="Legend"    data-label="Legend"    data-tip="Legend|Show or hide the colour legend."><i data-lucide="list"></i></button>
       <button id="bLig" class="full-only"    aria-label="Ligands"   data-label="Lig"       data-tip="Ligands|Show hetero molecules (drugs, cofactors, ions) as green sticks."><i data-lucide="pill"></i></button>
       <button id="bWat" class="full-only"    aria-label="Water"     data-label="Water"     data-tip="Water|Show crystallographic water molecules."><i data-lucide="droplets"></i></button>
@@ -52,11 +52,11 @@
         <button id="bModeMeas" aria-label="Measure mode" data-label="Meas" data-tip="Measure mode|Click two atoms to draw a dashed line and read the distance in Å."><i data-lucide="ruler"></i></button>
       </span>
       <button id="bFocus" class="full-only"  aria-label="Focus"     data-label="Focus"     data-tip="Focus|Zoom to the selected residues (or the whole model if none)."><i data-lucide="focus"></i></button>
-      <button id="bClear" class="full-only"  aria-label="Clear"     data-label="Clear"     data-tip="Clear|Remove all selections, labels and measurements."><i data-lucide="eraser"></i>Clear</button>
     </div>
     <div>
       <span class="sep full-only"></span>
       <button id="bReset"  aria-label="Reset view" data-label="Reset"    data-tip="Reset view|Return the camera"><i data-lucide="rotate-3d"></i></button>
+      <button id="bClear" aria-label="Clear" data-label="Clear" data-tip="Clear|Remove all selections, labels and measurements."><i data-lucide="eraser"></i>Clear</button>
       <!-- <button id="bTheme"  aria-label="Theme"     data-label="Theme"     data-tip="Theme|Switch between light and dark background."><i data-lucide="sun-moon"></i></button> -->
       <button id="bShot"   aria-label="Save PNG"  data-label="PNG"       data-tip="Save image|Download the current view as a PNG."><i data-lucide="camera"></i></button>
       <button id="bFull"   aria-label="Fullscreen" data-label="Full"     data-tip="Fullscreen|Fill the screen. Press Esc to exit."><i data-lucide="maximize"></i></button>
@@ -67,6 +67,17 @@
     <div id="status" class="ov">Loading…</div>
     <div id="info" class="ov"></div>
     <div id="legend" class="ov"></div>
+    <div id="orientation" aria-label="Global XYZ axes">
+      <svg viewBox="0 0 56 56" role="img" aria-hidden="true">
+        <line id="axisX" x1="28" y1="28" x2="46" y2="28" stroke="#ef4444"></line>
+        <line id="axisY" x1="28" y1="28" x2="28" y2="10" stroke="#22c55e"></line>
+        <line id="axisZ" x1="28" y1="28" x2="14" y2="42" stroke="#3b82f6"></line>
+        <circle cx="28" cy="28" r="2.5" fill="currentColor"></circle>
+        <text id="axisLabelX" x="48" y="31">X</text>
+        <text id="axisLabelY" x="28" y="8">Y</text>
+        <text id="axisLabelZ" x="11" y="47">Z</text>
+      </svg>
+    </div>
   </div>
 </div>
 <div id="tip"></div>

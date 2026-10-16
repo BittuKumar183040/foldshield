@@ -4,6 +4,7 @@ from typing import Callable, Iterable
 import streamlit as st
 
 from services import structures
+from ui.components.submission import SUBMISSION_URL
 from ui.viewer.structure_viewer import structure_viewer
 
 CHIPS_PER_ROW = 4
@@ -89,12 +90,13 @@ def short_text(text: str | None, limit: int = LABEL_MAX) -> str:
 
 
 def details_text(entry: dict) -> str:
-    return "  ·  ".join(f"{k}: {v}" for k, v in entry.get("details", {}).items())
+    """Format catalog metadata for callers that need a compact detail string."""
+    return "  ·  ".join(f"{key}: {value}" for key, value in entry.get("details", {}).items())
 
 
 def chip_details(entry: dict) -> str:
-    label = entry.get("label")
-    values = [str(v) for v in entry.get("details", {}).values() if v and v != label]
+    details = entry.get("details", {})
+    values = [str(details[key]) for key in ("Organism", "Method", "Resolution (Å)") if details.get(key)]
     return " · ".join(values)
 
 
@@ -110,10 +112,9 @@ def _chip(col, key: str, entry: dict, active: bool) -> None:
     details = chip_details(entry)
     third = short_text(details) if details else "\u00a0"
     label = f"**{entry['id']}**  \n:small[{short_text(entry.get('label'))}]  \n:small[{third}]"
-    tip = " · ".join(x for x in (entry.get("label"), entry.get("details", {}).get("Protein")) if x)
     col.button(label, key=f"sd_chip_{key}_{entry['id']}", icon=entry.get("icon"),
                type="primary" if active else "secondary", width="stretch",
-               help=tip or None, on_click=_set_preview, args=(key, entry["id"]))
+               on_click=_set_preview, args=(key, entry["id"]))
 
 
 def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None) -> None:
@@ -149,6 +150,13 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
                 if rest:
                     st.caption("Other structures" if first else "Choose a structure")
                     _chip_grid(key, rest, per_row, preview_id)
+                st.link_button(
+                    "Request Model",
+                    SUBMISSION_URL,
+                    icon=":material/add:",
+                    key=f"sd_request_model_{key}",
+                    width="stretch",
+                )
         if right is not None:
             with right:
                 model_panel(entry)
@@ -159,7 +167,7 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
             on_choose(entry["id"])
             st.rerun()
 
-def model_panel(entry: dict, key: str = "sd_viewer") -> None:  #{'id': '1CSH', 'label': 'Citrate synthase', 'recommendation': ['1AKE', '4AKE'], 'icon': '🧬', 'path': 'pdb files/1CSH.pdb', 'details': {'Protein': 'Citrate synthase'}}
+def model_panel(entry: dict, key: str = "sd_viewer") -> None:
     st.markdown(f"{entry.get('icon', '')}  **{entry['id']}**  \n:small[{short_text(entry.get('label'), 60)}]")
     with st.container(key=key):
         structure_viewer(**structures.viewer_args(entry), fill=True, height=LIST_HEIGHT, minimal=True)

@@ -26,4 +26,4 @@ def gauge(label, value, **kw) -> None:
     except (TypeError, ValueError):
         st.markdown(f"**{label}:** —")
         return
-    st.plotly_chart(gauge_fig(label, value, **kw), use_container_width=True)
+    st.plotly_chart(gauge_fig(label, value, **kw), width="stretch")
