@@ -7,6 +7,7 @@ The other card's selection shapes the list:
   * the structure already chosen on the other side is left out
   * its `recommendation` ids are moved to the top under a "Recommended" heading
 """
+import os
 from dataclasses import dataclass
 from typing import Any
 
@@ -21,7 +22,7 @@ from ui.components.structure_dialog import model_panel, open_structure_dialog
 
 # slot -> (title, data)
 SLOTS = {"ref": ("Reference", PDBs), "query": ("Query", PDBs)}
-
+SHOW_SAVED_RUN = os.getenv("FOLDSHIELD_SHOW_SAVED_RUN", "false").strip().lower() in {"1", "true", "yes", "on"}
 
 @dataclass
 class AnalyzeInputs:
@@ -116,6 +117,7 @@ def _structure_card(slot: str) -> tuple[PdbInput, str]:
 
 # --------------------------------------------------------------------------- panel
 def render_inputs() -> AnalyzeInputs:
+    summary_upload = None
     with st.container():
         heading, request = st.columns([3.5, 1.5], vertical_alignment="center")
         with heading:
@@ -148,8 +150,15 @@ def render_inputs() -> AnalyzeInputs:
                             disabled=not ready,
                             help=None if ready else "Choose a reference and a query structure first.")
 
-        st.divider()
-        with st.expander("Load a saved run", expanded=True):
-            summary_upload = st.file_uploader("summary.json", type=["json"], key="upload_summary", width="stretch", help="Load a saved run's summary.json to view its results and visuals.")
+        if SHOW_SAVED_RUN:
+            st.divider()
+            with st.expander("Load a saved run", expanded=False):
+                summary_upload = st.file_uploader(
+                    "summary.json",
+                    type=["json"],
+                    key="upload_summary",
+                    width="stretch",
+                    help="Load a saved run's summary.json to view its results and visuals.",
+                )
 
     return AnalyzeInputs(ref, query, ref_chain, query_chain, mode, keep_hetatm, summary_upload, run)

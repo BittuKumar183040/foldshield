@@ -7,10 +7,10 @@ from services import structures
 from ui.components.submission import SUBMISSION_URL
 from ui.viewer.structure_viewer import structure_viewer
 
-CHIPS_PER_ROW = 4
+CHIPS_PER_ROW = 3
 CHIPS_PER_ROW_PREVIEW = 2
 LABEL_MAX = 28
-CHIP_HEIGHT = "4.4rem"
+CHIP_HEIGHT = "5rem"
 CHIP_TITLE_SIZE = "1.15em"   # size of the bold title (the id) in each chip
 LIST_HEIGHT = 360
 
@@ -108,22 +108,41 @@ def _set_preview(key: str, pdb_id: str) -> None:
     st.session_state[_preview_key(key)] = pdb_id
 
 
-def _chip(col, key: str, entry: dict, active: bool) -> None:
+def _chip(col, key: str, entry: dict, active: bool, recommended: bool = False) -> None:
     details = chip_details(entry)
     third = short_text(details) if details else "\u00a0"
     label = f"**{entry['id']}**  \n:small[{short_text(entry.get('label'))}]  \n:small[{third}]"
-    col.button(label, key=f"sd_chip_{key}_{entry['id']}", icon=entry.get("icon"),
+    chip_key = f"sd_chip_{'rec_' if recommended else ''}{key}_{entry['id']}"
+    col.button(label, key=chip_key, icon=entry.get("icon"),
                type="primary" if active else "secondary", width="stretch",
                on_click=_set_preview, args=(key, entry["id"]))
 
 
-def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None) -> None:
+def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None,
+               recommended_ids: set[str] | None = None) -> None:
+    recommended_ids = recommended_ids or set()
     for i in range(0, len(entries), per_row):
         cols = st.columns(per_row)
         for col, entry in zip(cols, entries[i:i + per_row]):
-            _chip(col, key, entry, entry["id"] == active)
+            _chip(col, key, entry, entry["id"] == active, entry["id"] in recommended_ids)
 
 
+
+
+def _organism_groups(entries: list[dict]) -> list[tuple[str, list[dict]]]:
+    groups: dict[str, list[dict]] = {}
+    for item in entries:
+        organism = str(item.get("details", {}).get("Organism") or "Organism not specified").strip()
+        groups.setdefault(organism, []).append(item)
+    return sorted(groups.items(), key=lambda group: group[0].casefold())
+
+
+def _grouped_chips(key: str, entries: list[dict], per_row: int, active: str | None,
+                   recommended_ids: set[str] | None = None) -> None:
+    groups = _organism_groups(entries)
+    for organism, items in groups:
+        with st.expander(f"{organism}  ·  {len(items)}", expanded=True):
+            _chip_grid(key, items, per_row, active, recommended_ids)
 
 
 def _split(entries: dict[str, dict], exclude: str | None, recommended: Iterable[str]):
@@ -146,10 +165,10 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
             with st.container(key="sd_list", border=False, height=LIST_HEIGHT):
                 if first:
                     st.caption(recommended_label or "Recommended")
-                    _chip_grid(key, first, per_row, preview_id)
+                    _grouped_chips(key, first, per_row, preview_id, {item["id"] for item in first})
                 if rest:
                     st.caption("Other structures" if first else "Choose a structure")
-                    _chip_grid(key, rest, per_row, preview_id)
+                    _grouped_chips(key, rest, per_row, preview_id)
                 st.link_button(
                     "Request Model",
                     SUBMISSION_URL,

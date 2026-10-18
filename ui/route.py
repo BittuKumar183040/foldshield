@@ -43,13 +43,14 @@ _BRAND_LINK = '[data-testid="stTopNavLink"][href$="/"]'
 def _brand_css() -> str:
     css = f"""
         <style>
-        {_BRAND_LINK} {{ display: inline-flex !important; align-items: center; gap: .5rem; }}
+        {_BRAND_LINK} {{ display: inline-flex !important; visibility: visible !important; align-items: center; gap: .55rem; }}
         {_BRAND_LINK}::before {{
-            content: ""; flex: none; width: 1.9rem; height: 1.9rem;
+            content: ""; display: block; flex: none; width: 2rem; height: 2rem;
             background: url("{BRAND_ICON}") center / contain no-repeat;
         }}
         {_BRAND_LINK} * {{
-            font-size: 1rem !important; font-weight: 600 !important; letter-spacing: -0.01em;
+            display: inline !important; visibility: visible !important;
+            font-size: 1rem !important; font-weight: 700 !important; letter-spacing: -0.01em;
         }}
         </style>
         """
