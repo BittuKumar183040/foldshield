@@ -1,11 +1,10 @@
 """Visuals tab: entropy images, 3D backbone, signal charts."""
 import os
 
-import numpy as np
 import streamlit as st
 from ui.charts import signal_bar_fig, signal_radar_fig
 from ui.components import section
-from visualisation.visualise_feature_extractor import plot_dual_pdb_token_backbones_plotly_separate
+from ui.viewer.json_comparison_viewer import render_json_comparison_viewer
 
 
 def entropy_images(outdir: str) -> None:
@@ -20,29 +19,10 @@ def entropy_images(outdir: str) -> None:
 
 
 def backbone_3d(summary: dict, fill: bool = False) -> bool:
-    """Draw the 3D backbone. Returns False when the summary has no 3D data.
-
-    fill=True stretches the chart to its container (workbench stage) and keeps the
-    camera across reruns (e.g. when a popup opens); no section header is drawn.
-    """
-    keys = ("tokens_ref", "tokens_query", "ca_coords_ref", "ca_coords_query")
-    if not all(k in summary for k in keys):
-        return False
+    """Render the JSON C-alpha backbones in two linked 3Dmol canvases."""
     if not fill:
         section("UL-DSL tokenized backbone (3D)")
-    fig = plot_dual_pdb_token_backbones_plotly_separate(
-        np.array(summary["ca_coords_ref"]), summary["tokens_ref"],
-        np.array(summary["ca_coords_query"]), summary["tokens_query"])
-    if not fill:
-        st.plotly_chart(fig, width="stretch")
-        return True
-    fig.update_layout(autosize=True, uirevision="fs-stage")
-    try:
-        st.plotly_chart(fig, width="stretch", height="stretch")
-    except TypeError:       # older Streamlit: no height="stretch"
-        fig.update_layout(height=700)
-        st.plotly_chart(fig, width="stretch")
-    return True
+    return render_json_comparison_viewer(summary, height=760 if fill else 640)
 
 
 def signal_charts(summary: dict, stacked: bool = False, height: int | None = None) -> None:

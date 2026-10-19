@@ -58,7 +58,8 @@ def _dialog_css() -> str:
         {_CHIP} {{
             height: var(--sd-chip-h);
             min-height: var(--sd-chip-h);
-            padding: .4rem 1.5rem;
+            padding: .35rem .55rem !important;
+            position: relative !important;
         }}
         {_CHIP}, {_CHIP} > div, {_CHIP} [data-testid="stMarkdownContainer"] {{
             justify-content: flex-start !important;
@@ -67,6 +68,9 @@ def _dialog_css() -> str:
         {_CHIP} > div, {_CHIP} [data-testid="stMarkdownContainer"] {{
             min-width: 0;
             overflow: hidden;
+        }}
+        {_CHIP} > div {{
+            margin-left: 4.6rem;
         }}
         {_CHIP} p {{
             margin: 0 !important;
@@ -113,9 +117,28 @@ def _chip(col, key: str, entry: dict, active: bool, recommended: bool = False) -
     third = short_text(details) if details else "\u00a0"
     label = f"**{entry['id']}**  \n:small[{short_text(entry.get('label'))}]  \n:small[{third}]"
     chip_key = f"sd_chip_{'rec_' if recommended else ''}{key}_{entry['id']}"
-    col.button(label, key=chip_key, icon=entry.get("icon"),
+    col.button(label, key=chip_key,
                type="primary" if active else "secondary", width="stretch",
                on_click=_set_preview, args=(key, entry["id"]))
+
+
+def _thumbnail_css(entries: dict[str, dict], key: str) -> str:
+    rules = []
+    for entry in entries.values():
+        pdb_id = entry["id"]
+        thumbnail = entry.get("thumbnail")
+        if not thumbnail:
+            continue
+        for recommended in (False, True):
+            chip_key = f"sd_chip_{'rec_' if recommended else ''}{key}_{pdb_id}"
+            selector = f".st-key-{chip_key} button"
+            rules.append(
+                f'{selector}::before{{content:"";position:absolute;left:.55rem;top:50%;'
+                f'transform:translateY(-50%);width:4rem;height:4rem;border-radius:8px;'
+                f'background-image:url("{thumbnail}");background-repeat:no-repeat;'
+                f'background-position:center;background-size:contain;}}'
+            )
+    return "<style>" + "".join(rules) + "</style>"
 
 
 def _chip_grid(key: str, entries: list[dict], per_row: int, active: str | None,
@@ -157,7 +180,7 @@ def _body(key: str, entries: dict, exclude, recommended, recommended_label, on_c
     preview_id = st.session_state.get(_preview_key(key))
     entry = pool.get(preview_id)
 
-    st.markdown(_dialog_css(), unsafe_allow_html=True)   # same method as ui/theme.py's inject_css
+    st.markdown(_dialog_css() + _thumbnail_css(entries, key), unsafe_allow_html=True)
     with st.container(key="sd_dialog"):
         left, right = st.columns([1.15, 1], gap="medium") if entry else (st.container(), None)
         per_row = CHIPS_PER_ROW_PREVIEW if entry else CHIPS_PER_ROW

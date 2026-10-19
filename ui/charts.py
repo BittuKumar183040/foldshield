@@ -1,10 +1,18 @@
 """Plotly figure builders: pure functions, no Streamlit calls."""
 import plotly.graph_objects as go
+import streamlit as st
 from ui.config import CHART_SIGNALS
 from ui.theme import GOOD, WARN, BAD, BRAND
 
 _CLEAR = "rgba(0,0,0,0)"
 _GRID = "rgba(128,128,128,.25)"
+
+
+def _font_color() -> str:
+    try:
+        return "#f1e9e3" if st.context.theme.type == "dark" else "#2b211b"
+    except Exception:
+        return "#2b211b"
 
 
 def _values(scores: dict) -> list:
@@ -22,6 +30,7 @@ def signal_bar_fig(scores: dict, combined: float) -> go.Figure:
     fig.update_layout(
         yaxis=dict(range=[0, 1.18], title="Score", gridcolor=_GRID),
         plot_bgcolor=_CLEAR, paper_bgcolor=_CLEAR, showlegend=False,
+        font=dict(color=_font_color()),
         height=380, margin=dict(t=20, b=40, l=50, r=20),
     )
     fig.update_xaxes(showgrid=False)
@@ -34,14 +43,14 @@ def signal_radar_fig(scores: dict) -> go.Figure:
     closed_labels = labels + labels[:1]
     fig = go.Figure(go.Scatterpolar(
         r=values + values[:1], theta=closed_labels, fill="toself",
-        fillcolor="rgba(44,114,176,0.18)", line=dict(color=BRAND, width=2), name="Signal profile"))
+        fillcolor="rgba(216,146,103,0.18)", line=dict(color=BRAND, width=2), name="Signal profile"))
     fig.add_trace(go.Scatterpolar(
         r=[0.75] * len(closed_labels), theta=closed_labels, mode="lines",
         line=dict(color="gray", width=1, dash="dash"), name="0.75 reference"))
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True, range=[0, 1])),
         paper_bgcolor=_CLEAR, height=380, margin=dict(t=30, b=40, l=60, r=60),
-        legend=dict(orientation="h", y=-0.1),
+        legend=dict(orientation="h", y=-0.1), font=dict(color=_font_color()),
     )
     return fig
 
@@ -57,6 +66,7 @@ def gauge_fig(label, value, *, vmin=0.0, vmax=1.0, invert=False, suffix="") -> g
     fig = go.Figure(go.Indicator(
         mode="gauge+number", value=float(value), title={"text": label},
         number={"suffix": suffix, "valueformat": ".3f"},
-        gauge={"axis": {"range": [vmin, vmax]}, "bar": {"color": "#264653"}, "steps": steps}))
-    fig.update_layout(height=220, margin=dict(l=10, r=10, t=40, b=10), paper_bgcolor=_CLEAR)
+        gauge={"axis": {"range": [vmin, vmax]}, "bar": {"color": BRAND}, "steps": steps}))
+    fig.update_layout(height=220, margin=dict(l=10, r=10, t=40, b=10), paper_bgcolor=_CLEAR,
+                      font=dict(color=_font_color()))
     return fig

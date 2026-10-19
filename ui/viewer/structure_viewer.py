@@ -39,7 +39,7 @@ def _build_html(cfg: dict, box_height: str) -> str:
     wrap_cls = " ".join(c for c, on in (("dark", dark), ("minimal", cfg.get("minimal"))) if on)
     html = (html.replace("/*__CSS__*/", css).replace("/*__JS__*/", js)
                 .replace("__CFG__", cfg_json).replace("__HEIGHT__", box_height)
-                .replace("__BG__", "#000000" if dark else "#ffffff")
+                .replace("__BG__", "#090807" if dark else "#ffffff")
                 .replace("__SCHEME__", "dark" if dark else "light")
                 .replace("__WRAPCLS__", wrap_cls))
     return html.replace("<!--__LIBS__-->", _libs_html())

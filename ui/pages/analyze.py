@@ -44,12 +44,12 @@ def _panel_blocks(summary: dict, fusion: dict, p2: dict) -> None:
     """Side panel content: edit / reorder / remove blocks here."""
     if fusion:
         combined_verdict(fusion)
-    signal_charts(summary, stacked=True, height=SIGNAL_CHART_HEIGHT)
     if fusion.get("signal_scores") and fusion.get("per_signal"):
         signals_panel(fusion)
+    baseline_metrics(summary.get("tm_score"), summary.get("rmsd"))
     if p2:
         perturbation_panel(p2)
-    baseline_metrics(summary.get("tm_score"), summary.get("rmsd"))
+    signal_charts(summary, stacked=True, height=SIGNAL_CHART_HEIGHT)
 
 
 def _render_workbench(result) -> None:

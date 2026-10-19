@@ -54,6 +54,17 @@ class Tool:
 
 
 def _theme(option: str, fallback: str) -> str:
+    try:
+        if st.context.theme.type == "dark":
+            dark_values = {
+                "backgroundColor": "#090807",
+                "secondaryBackgroundColor": "#191614",
+                "textColor": "#f1e9e3",
+            }
+            if option in dark_values:
+                return dark_values[option]
+    except Exception:
+        pass
     return st.get_option(f"theme.{option}") or fallback
 
 
@@ -74,14 +85,23 @@ def _workbench_css(stage_pct: int, breakpoint: int, header: int, edge_left: int,
     {_WB}{{gap:0!important;min-height:0!important;padding:{header}px 0 0 {edge_left}px!important;box-sizing:border-box}}
     {_STAGE}{{position:relative;overflow:hidden!important;background:{bg};gap:0!important}}
     {_STAGE} {_ELEM}:has({_PLOT}),{_STAGE} {_FRAME},{_STAGE} {_PLOT},{_STAGE} .js-plotly-plot,{_STAGE} .plot-container{{height:100%!important;min-height:0!important}}
+    {_STAGE} .st-key-fs-json-compare-viewer{{height:100%!important;min-height:0!important}}
+    {_STAGE} .st-key-fs-json-compare-viewer iframe{{width:100%!important;height:calc(100dvh - {header}px)!important;min-height:380px;border:0}}
     {_PANEL}{{gap:.9rem!important;padding:1rem 1.1rem 1.5rem!important;background:{bg2};border-left:{edge};overflow-x:auto}}
     {_DOCK},{_BACK}{{position:absolute;z-index:10;width:auto!important;height:auto!important;flex-direction:row!important;
       flex-wrap:wrap;align-items:center;gap:.4rem!important;padding:.35rem .5rem!important;border:{edge};
       border-radius:999px;background:{glass};backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}}
-    {_DOCK}{{bottom:1rem;left:50%;transform:translateX(-50%);width:max-content!important;max-width:94%;justify-content:center}}
-    {_BACK}{{top:.75rem;left:.75rem}}
+    {_DOCK}{{bottom:calc(1rem + 30px);left:50%;transform:translateX(-50%);width:max-content!important;max-width:94%;justify-content:center;
+      gap:.35rem!important;padding:.4rem .5rem!important;border-radius:16px;background:{glass};box-shadow:none!important}}
+    {_BACK}{{top:21px;left:22px}}
     {_DOCK} {_ELEM},{_BACK} {_ELEM}{{width:auto!important}}
-    {_DOCK} button,{_BACK} button{{white-space:nowrap;border-radius:999px;border-color:transparent}}
+    {_DOCK} button{{height:31px!important;min-height:31px!important;padding:0 .65rem!important;gap:.35rem!important;white-space:nowrap;
+      font-size:.75rem!important;line-height:1!important;border:{edge}!important;border-radius:10px!important;
+      background:color-mix(in srgb,{bg2} 92%,{fg} 8%)!important;color:{fg}!important;box-shadow:none!important}}
+    {_DOCK} button:hover{{border-color:color-mix(in srgb,{fg} 24%,transparent)!important;transform:translateY(-1px)}}
+    {_BACK}{{padding:0!important;border:0!important;border-radius:10px!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+    {_BACK} button{{height:31px!important;min-height:31px!important;padding:0 .65rem!important;gap:.35rem!important;white-space:nowrap;font-size:.75rem!important;line-height:1!important;border:{edge}!important;border-radius:10px!important;background:{glass}!important;color:{fg}!important;box-shadow:0 2px 4px rgba(31,74,91,.055),inset 0 1px 0 rgba(255,255,255,.7)!important}}
+    {_BACK} button [data-testid="stIconMaterial"]{{font-size:15px!important}}
     @media(min-width:{breakpoint + 1}px){{
       {_VIEW}{{overflow:hidden!important;height:100dvh!important}}
       {_WB} {_ROW}{{flex-wrap:nowrap!important;gap:0!important;height:{body_h}!important;min-height:0!important;align-items:stretch!important}}
@@ -94,6 +114,8 @@ def _workbench_css(stage_pct: int, breakpoint: int, header: int, edge_left: int,
       {_WB} {_ROW}{{flex-direction:column!important;gap:0!important}}
       {_col("")}{{width:100%!important;flex:none!important;min-width:0!important}}
       {_STAGE}{{height:max(62dvh,380px)!important;flex:none!important}}
+      {_BACK}{{top:16px;left:17px}}
+      {_STAGE} .st-key-fs-json-compare-viewer iframe{{height:max(62dvh,380px)!important}}
       {_PANEL}{{height:auto!important;flex:none!important;border-left:0;border-top:{edge}}}
     }}
     """

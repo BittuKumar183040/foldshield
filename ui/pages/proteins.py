@@ -33,11 +33,16 @@ def _browser(df) -> None:
         st.session_state[_TABLE] = _NO_SELECTION
 
     # "single-cell" selection = a click anywhere in a row, with no checkbox column.
-    column_config = {}
+    column_config = {
+        "Thumbnail": st.column_config.ImageColumn(
+            "Structure", width=92, help="PDB structure thumbnail"
+        )
+    }
     if "RCSB link" in view.columns:
         column_config["RCSB link"] = st.column_config.LinkColumn(
             "RCSB entry", display_text="Open entry ↗", help="Open this structure on RCSB PDB")
-    st.dataframe(view, hide_index=True, width="stretch", height="content", column_config=column_config,
+    st.dataframe(view, hide_index=True, width="stretch", height="content", row_height=68,
+                 column_config=column_config,
                  on_select="rerun", selection_mode="single-cell", key=_TABLE)
 
     if entry:

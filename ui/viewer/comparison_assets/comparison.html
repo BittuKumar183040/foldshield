@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="color-scheme" content="__SCHEME__">
+<style>html,body{margin:0;background:__BG__;color-scheme:__SCHEME__}</style>
+<!--__LIBS__-->
+<style>:root{--compare-height:__HEIGHT__}/*__CSS__*/</style>
+</head><body>
+<main id="compare" class="__WRAPCLS__">
+  <header id="toolbar">
+    <div class="actions">
+      <button id="trace" class="action active" title="Token-colored backbone trace"><i data-lucide="shapes"></i><span>Trace</span></button>
+      <button id="beads" class="action" title="Show Cα atoms as beads"><i data-lucide="circle"></i><span>Beads</span></button>
+      <button id="color" class="action" title="Switch between token and sequence-position colors"><i data-lucide="palette"></i><span id="color-label">Tokens</span></button>
+      <button id="sync" class="icon-action active" title="Synchronize rotation and zoom"><i data-lucide="link"></i></button>
+      <button id="spin" class="icon-action" title="Auto rotate both models"><i data-lucide="refresh-cw"></i></button>
+      <button id="fit" class="icon-action" title="Fit both models"><i data-lucide="focus"></i></button>
+      <button id="clear" class="icon-action" title="Clear residue selection"><i data-lucide="eraser"></i></button>
+    </div>
+  </header>
+  <section class="models">
+    <article class="model-card">
+      <div class="model-title"><span class="model-dot ref"></span><strong id="title-ref"></strong><span class="model-tag">REFERENCE</span></div>
+      <div class="canvas">
+        <div id="view-ref" class="model-view"></div>
+        <svg id="axis-ref" class="axis-widget" viewBox="0 0 80 80" role="img" aria-label="Reference model orientation">
+          <circle cx="40" cy="40" r="3" class="axis-origin" />
+          <line id="ref-axis-x" x1="40" y1="40" x2="65" y2="40" class="axis-x"/><text id="ref-label-x" x="70" y="43" class="axis-x">X</text>
+          <line id="ref-axis-y" x1="40" y1="40" x2="40" y2="15" class="axis-y"/><text id="ref-label-y" x="40" y="10" class="axis-y">Y</text>
+          <line id="ref-axis-z" x1="40" y1="40" x2="40" y2="65" class="axis-z"/><text id="ref-label-z" x="40" y="76" class="axis-z">Z</text>
+        </svg>
+      </div>
+    </article>
+    <article class="model-card">
+      <div class="model-title"><span class="model-dot query"></span><strong id="title-query"></strong><span class="model-tag">QUERY</span></div>
+      <div class="canvas">
+        <div id="view-query" class="model-view"></div>
+        <svg id="axis-query" class="axis-widget" viewBox="0 0 80 80" role="img" aria-label="Query model orientation">
+          <circle cx="40" cy="40" r="3" class="axis-origin" />
+          <line id="query-axis-x" x1="40" y1="40" x2="65" y2="40" class="axis-x"/><text id="query-label-x" x="70" y="43" class="axis-x">X</text>
+          <line id="query-axis-y" x1="40" y1="40" x2="40" y2="15" class="axis-y"/><text id="query-label-y" x="40" y="10" class="axis-y">Y</text>
+          <line id="query-axis-z" x1="40" y1="40" x2="40" y2="65" class="axis-z"/><text id="query-label-z" x="40" y="76" class="axis-z">Z</text>
+        </svg>
+      </div>
+    </article>
+  </section>
+  <footer><div id="legend" class="legend"></div></footer>
+</main>
+<script>const CFG=__CFG__;</script>
+<script>/*__JS__*/</script>
+</body></html>

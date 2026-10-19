@@ -55,12 +55,12 @@ def model_source(entry: dict) -> str:
 def table() -> pd.DataFrame:
     rows = []
     for e in PDBs.values():
-        row = {"ID": e["id"], "Label": e.get("label") or ""}
+        row = {"ID": e["id"], "Thumbnail": e.get("thumbnail", ""), "Label": e.get("label") or ""}
         row.update(e.get("details", {}))             # Protein, plus any keys you add later
         row["Recommended Compression"] = ", ".join(r for r in e.get("recommendation", []) if r)
         rows.append(row)
     df = pd.DataFrame(rows).fillna("")
-    columns = ["ID", "Label", "Protein", "Organism", "Method", "Resolution (Å)", "RCSB link", "Recommended Compression"]
+    columns = ["ID", "Thumbnail", "Label", "Protein", "Organism", "Method", "Resolution (Å)", "RCSB link", "Recommended Compression"]
     return df[[column for column in columns if column in df.columns]]
 
 

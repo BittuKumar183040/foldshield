@@ -234,59 +234,81 @@ def plot_dual_pdb_token_backbones_plotly_separate(
     ca_ref, tokens_ref,
     ca_query, tokens_query,
     title_ref="Reference UL-DSL Tokens",
-    title_query="Query UL-DSL Tokens"
+    title_query="Query UL-DSL Tokens",
+    view_mode="Side-by-side",
+    focus_index=None,
 ):
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        specs=[[{"type": "scene"}, {"type": "scene"}]],
-        subplot_titles=[title_ref, title_query]
-    )
+    """Render two JSON-sourced C-alpha traces side by side or as a fitted overlay."""
+    ca_ref = np.asarray(ca_ref, dtype=float)
+    ca_query = np.asarray(ca_query, dtype=float)
+    tokens_ref, tokens_query = list(tokens_ref), list(tokens_query)
+    overlay = view_mode == "Superimposed" and len(ca_ref) == len(ca_query) and len(ca_ref) > 1
 
-    def add_backbone(fig, ca_coords, tokens, scene_id, show_legend_tokens=True):
-        seen_tokens = set()
+    if overlay:
+        ref_center = ca_ref.mean(axis=0)
+        query_center = ca_query.mean(axis=0)
+        ref_centered = ca_ref - ref_center
+        query_centered = ca_query - query_center
+        u, _, vt = np.linalg.svd(query_centered.T @ ref_centered)
+        rotation = u @ vt
+        if np.linalg.det(rotation) < 0:
+            u[:, -1] *= -1
+            rotation = u @ vt
+        ca_query = query_centered @ rotation + ref_center
+        fig = make_subplots(rows=1, cols=1, specs=[[{"type": "scene"}]])
+        scenes = [(ca_ref, tokens_ref, 1, "Reference", "#168f91"),
+                  (ca_query, tokens_query, 1, "Query", "#e4775d")]
+        # Keep the overlay legend concise: model identity is encoded by color.
+        for model_name, color in (("Reference", "#168f91"), ("Query", "#e4775d")):
+            fig.add_trace(go.Scatter3d(x=[None, None], y=[None, None], z=[None, None],
+                                       mode="lines", name=model_name,
+                                       line=dict(color=color, width=7), hoverinfo="skip"))
+    else:
+        fig = make_subplots(rows=1, cols=2, specs=[[{"type": "scene"}, {"type": "scene"}]],
+                            subplot_titles=[title_ref, title_query])
+        scenes = [(ca_ref, tokens_ref, 1, "Reference", None),
+                  (ca_query, tokens_query, 2, "Query", None)]
 
-        for i in range(len(ca_coords) - 1):
-            token = tokens[i]
-            color = TOKEN_COLORS.get(token, "#cccccc")
+    for coords, tokens, scene_id, model_name, color_override in scenes:
+        # Combine disjoint segments of each token into one trace instead of making
+        # one Plotly trace per residue pair. This cuts hundreds of traces to a handful.
+        token_segments = {}
+        for i in range(max(0, min(len(coords) - 1, len(tokens)))):
+            token = str(tokens[i])
+            bucket = token_segments.setdefault(token, ([], [], [], []))
+            xs, ys, zs, hover = bucket
+            text = f"{model_name} · residue {i + 1} · {token}"
+            xs.extend((coords[i, 0], coords[i + 1, 0], None))
+            ys.extend((coords[i, 1], coords[i + 1, 1], None))
+            zs.extend((coords[i, 2], coords[i + 1, 2], None))
+            hover.extend((text, text, None))
 
-            show_legend = False
-            if show_legend_tokens and token not in seen_tokens:
-                show_legend = True
-                seen_tokens.add(token)
+        for token, (xs, ys, zs, hover) in token_segments.items():
+            color = color_override or TOKEN_COLORS.get(token, "#aab4bd")
+            fig.add_trace(go.Scatter3d(
+                x=xs, y=ys, z=zs, mode="lines", line=dict(color=color, width=6),
+                text=hover, hovertemplate="%{text}<extra></extra>",
+                name=token, legendgroup=token,
+                showlegend=not overlay and model_name == "Reference",
+            ), row=1, col=scene_id)
 
-            fig.add_trace(
-                go.Scatter3d(
-                    x=[ca_coords[i, 0], ca_coords[i+1, 0]],
-                    y=[ca_coords[i, 1], ca_coords[i+1, 1]],
-                    z=[ca_coords[i, 2], ca_coords[i+1, 2]],
-                    mode="lines",
-                    line=dict(color=color, width=6),
-                    name=token,
-                    legendgroup=token,
-                    showlegend=show_legend,
-                    hovertemplate=(
-                        f"Residue: {i}<br>"
-                        f"Token: {token}<extra></extra>"
-                    )
-                ),
-                row=1,
-                col=scene_id
-            )
-
-    add_backbone(fig, ca_ref, tokens_ref, scene_id=1, show_legend_tokens=True)
-    add_backbone(fig, ca_query, tokens_query, scene_id=2, show_legend_tokens=False)
+        if focus_index is not None and 0 <= focus_index < len(coords):
+            token = tokens[focus_index] if focus_index < len(tokens) else "Unknown"
+            fig.add_trace(go.Scatter3d(
+                x=[coords[focus_index, 0]], y=[coords[focus_index, 1]], z=[coords[focus_index, 2]],
+                mode="markers+text", text=[str(focus_index + 1)], textposition="top center",
+                marker=dict(size=7, color="#f3ad34", line=dict(color="white", width=2)),
+                name=f"{model_name} focus", showlegend=False,
+                hovertemplate=f"{model_name} · residue {focus_index + 1} · {token}<extra></extra>",
+            ), row=1, col=scene_id)
 
     fig.update_layout(
-        height=650,
-        legend_title_text="UL-DSL Tokens",
-        margin=dict(l=0, r=0, t=50, b=0)
+        height=650, autosize=True, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#294655"), legend_title_text="UL-DSL Tokens" if not overlay else "Model",
+        margin=dict(l=0, r=0, t=58 if not overlay else 24, b=0),
+        uirevision=f"fs-backbone-{view_mode}",
+        scene=dict(aspectmode="data"),
+        scene2=dict(aspectmode="data"),
     )
-
-    fig.update_scenes(
-        xaxis=dict(visible=False),
-        yaxis=dict(visible=False),
-        zaxis=dict(visible=False)
-    )
-
+    fig.update_scenes(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False))
     return fig

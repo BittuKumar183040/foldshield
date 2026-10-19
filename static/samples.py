@@ -42,19 +42,6 @@ SAMPLES: dict[str, dict] = {
         "scores should reflect a close structural match.",
         ["same-family", "expected-similar"],
     ),
-    "ca_1T15_vs_1JNX": _entry(
-        "ca_1T15_vs_1JNX",
-        "Two BRCA1 BRCT-domain structures. Same domain solved in different complexes, which tests "
-        "sensitivity to small local differences.",
-        ["same-family", "expected-similar"],
-    ),
-    # --- related proteins, different domains ------------------------------------------
-    "ca_1JM7_vs_1JNX": _entry(
-        "ca_1JM7_vs_1JNX",
-        "Two different regions of BRCA1: the RING domain complex (1JM7) and the BRCT domains (1JNX). "
-        "Related protein, different folds.",
-        ["same-protein", "different-domains"],
-    ),
     # --- unrelated folds (expected to score low) --------------------------------------
     "ca_1UBQ_vs_1CRN": _entry(
         "ca_1UBQ_vs_1CRN",
@@ -85,7 +72,6 @@ SAMPLES: dict[str, dict] = {
     "ca_1CRN_vs_1CSH": _generic("ca_1CRN_vs_1CSH"),
     "ca_1CRN_vs_4OBE": _generic("ca_1CRN_vs_4OBE"),
     "ca_1IYJ_vs_1T15": _generic("ca_1IYJ_vs_1T15"),
-    "ca_1J9O_vs_2JP1": _generic("ca_1J9O_vs_2JP1"),
     "ca_1JM7_vs_4OBE": _generic("ca_1JM7_vs_4OBE"),
     "ca_1QLP_vs_1H8H": _generic("ca_1QLP_vs_1H8H"),
     "ca_1S2H_vs_2V64": _generic("ca_1S2H_vs_2V64"),
@@ -513,6 +499,9 @@ def _pdb_entry(row: dict) -> dict:
     return {
         "id": row["ID"],
         "label": row.get("Label", ""),
+        "thumbnail": row.get("Thumbnail") or (
+            f"https://cdn.rcsb.org/images/structures/{row['ID'].lower()}_assembly-1.jpeg"
+        ),
         "recommendation": recommendations,
         "icon": ":material/biotech:",
         "path": f"{PDB_DIR}/{row['ID']}.pdb",
