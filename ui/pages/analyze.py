@@ -8,9 +8,9 @@ from ui.components.report import report_download
 from ui.sections.results import baseline_metrics, combined_verdict, perturbation_panel, signals_panel
 from ui.sections.visuals import backbone_3d, entropy_images, signal_charts
 from ui.sections.log import render_log
-from ui.workbench import STAGE_PCT, Tool, back_button, inject_workbench_css, panel, render_dock, stage, workbench
+from ui.workbench import STAGE_PCT, Tool, back_button, inject_workbench_css, panel, render_dock, render_resizer, stage, workbench
 
-SIGNAL_CHART_HEIGHT = 260          # px, compact charts inside the side panel
+SIGNAL_CHART_HEIGHT = 230          # px, compact charts inside the side panel
 
 
 def _handle_actions(inputs: AnalyzeInputs) -> None:
@@ -74,10 +74,13 @@ def _render_workbench(result) -> None:
                 Tool("entropy", "Entropy", partial(entropy_images, artifacts_dir),
                      icon=":material/bar_chart:", title="Entropy (reference & query)"),
                 Tool("report", "Report", partial(report_download, summary, artifacts_dir),
-                     icon=":material/picture_as_pdf:", title="Download PDF report", width="medium"),
+                     icon=":material/picture_as_pdf:", title="Report preview", width="large"),
                 Tool("log", "Logs", partial(render_log, result),
                      icon=":material/terminal:", title="Run log & summary"),
             ])
+
+        # The splitter is a small same-page control; it persists its desktop width locally.
+        render_resizer()
 
 
 def render() -> None:

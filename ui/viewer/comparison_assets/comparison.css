@@ -21,6 +21,7 @@ body {
   --glass: rgba(255, 255, 255, 0.52);
   --glass-strong: rgba(255, 255, 255, 0.76);
   --teal: #d89267;
+  --teal-strong: #95522f;
   --teal-soft: rgba(216, 146, 103, 0.14);
   --shadow:
     0 16px 38px rgba(78, 50, 33, 0.08), 0 3px 10px rgba(78, 50, 33, 0.04);
@@ -51,6 +52,7 @@ body {
   --glass: rgba(25, 22, 20, 0.76);
   --glass-strong: rgba(34, 29, 26, 0.94);
   --teal: #d89267;
+  --teal-strong: #95522f;
   --teal-soft: rgba(216, 146, 103, 0.17);
   --shadow: 0 16px 38px rgba(0, 0, 0, 0.35), 0 3px 10px rgba(0, 0, 0, 0.2);
   background:
@@ -128,17 +130,14 @@ body {
   padding: 0;
 }
 .actions .active {
-  color: #8e4d2d;
-  border-color: rgba(216, 146, 103, 0.42);
-  background: linear-gradient(
-    145deg,
-    rgba(245, 218, 201, 0.96),
-    rgba(232, 185, 163, 0.76)
-  );
+  color: #fff;
+  border-color: var(--teal-strong);
+  background: var(--teal-strong);
 }
 #compare.dark .actions .active {
-  color: #f3c5a6;
-  background: rgba(216, 146, 103, 0.2);
+  color: #fff;
+  border-color: var(--teal-strong);
+  background: var(--teal-strong);
 }
 .models {
   flex: 1;
@@ -207,8 +206,8 @@ body {
   margin-left: auto;
   padding: 3px 6px;
   border-radius: 999px;
-  background: var(--teal-soft);
-  color: var(--teal);
+  background: var(--teal-strong);
+  color: #fff;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.06em;

@@ -16,6 +16,7 @@ body {
   --muted: #74645a;
   --bd: rgba(92, 62, 43, 0.2);
   --accent: #d89267;
+  --accent-strong: #95522f;
   display: flex;
   flex-direction: column;
   height: __HEIGHT__;
@@ -38,6 +39,7 @@ body {
   --muted: #b6a69b;
   --bd: rgba(216, 146, 103, 0.24);
   --accent: #d89267;
+  --accent-strong: #95522f;
 }
 #wrap:fullscreen {
   height: 100vh !important;
@@ -67,8 +69,8 @@ body {
   border-color: var(--accent);
 }
 #bar button.on {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
   color: #fff;
 }
 #bar button:disabled {

@@ -21,21 +21,19 @@ def baseline_metrics(tm, rmsd) -> None:
 
 def combined_verdict(fusion: dict) -> None:
     """Headline card: the one thing a reader should see first."""
-    section("Combined score — Fusion Layer v2 (Ridge CV)")
+    section("Combined score", "Fusion Layer v2 · " + FUSION_NOTES.get(fusion.get("fusion_mode"), "Fusion score"))
     score = fusion.get("combined_score")
-    mode = fusion.get("fusion_mode", "—")
     c = score_color(score)
     render(f"""
-    <div class="fs-card fs-split" style="--accent:{c};justify-content:flex-start;gap:22px;padding:18px 22px">
-      <div style="text-align:center;min-width:110px">
-        <div class="fs-label">Combined</div>
+    <div class="fs-card fs-combined-card" style="--accent:{c}">
+      <div class="fs-combined-score">
+        <div class="fs-label">Similarity score</div>
         <div class="fs-value xl">{fmt(score, ".4f")}</div>
-        <div class="fs-sub">{esc(FUSION_NOTES.get(mode, mode))}</div>
       </div>
       <div class="fs-vr"></div>
-      <div style="flex:1">
-        <div class="fs-label">Verdict</div>
-        <div class="fs-value sm">{esc(fusion.get("overall", "—"))}</div>
+      <div class="fs-combined-verdict">
+        <div class="fs-eyebrow">OVERALL VERDICT</div>
+        <div class="fs-verdict-text">{esc(fusion.get("overall", "—"))}</div>
       </div>
     </div>""")
     for flag in fusion.get("flags") or []:
@@ -44,7 +42,7 @@ def combined_verdict(fusion: dict) -> None:
 
 
 def signals_panel(fusion: dict) -> None:
-    section("FoldShield++ signals")
+    section("FoldShield++ signals", "Signal scores and their contribution to the combined result")
     per_signal = fusion.get("per_signal") or {}
     scores = fusion.get("signal_scores") or {}
     weights = fusion.get("weights_used") or {}
@@ -53,14 +51,15 @@ def signals_panel(fusion: dict) -> None:
 
 
 def perturbation_panel(p2: dict) -> None:
-    section("Perturbation classification — Phase 2")
+    section("Perturbation", "Phase 2 structural change classification")
     ssef, loc, gap = p2.get("ssef_score"), p2.get("local_topology_score"), p2.get("gap_score")
     gc = gap_color(gap)
     gap_card = f"""
     <div class="fs-card tint fs-split" style="--accent:{gc};flex-grow:2">
       <div>
-        <div class="fs-label">Gap score (SSEF − local topology)</div>
+        <div class="fs-label">Gap score</div>
         <div class="fs-value xl">{fmt(gap, "+.3f")}</div>
+        <div class="fs-sub">SSEF − local topology</div>
       </div>
       <div style="text-align:right">
         <div class="fs-sub" style="margin:0 0 6px">Perturbation class</div>

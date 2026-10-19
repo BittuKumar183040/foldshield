@@ -1,4 +1,4 @@
-streamlit
+streamlit[pdf]
 plotly
 numpy
 streamlit-shadcn-ui==1.0.1
