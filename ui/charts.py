@@ -9,10 +9,7 @@ _GRID = "rgba(128,128,128,.25)"
 
 
 def _font_color() -> str:
-    try:
-        return "#f1e9e3" if st.context.theme.type == "dark" else "#2b211b"
-    except Exception:
-        return "#2b211b"
+    return "#2b211b"
 
 
 def _values(scores: dict) -> list:

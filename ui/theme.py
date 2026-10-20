@@ -1,4 +1,4 @@
-"""Shared FoldShield palette and theme-aware global application styles."""
+"""Shared FoldShield palette and globally fixed light application styles."""
 import streamlit as st
 
 GOOD, WARN, BAD, MUTED = "#2a9d8f", "#f4a261", "#e76f51", "#8794a3"
@@ -101,10 +101,8 @@ h1,h2,h3,h4{color:var(--fs-ink)!important;letter-spacing:-.035em}h1{font-weight:
 
 
 def _is_dark_theme() -> bool:
-    try:
-        return st.context.theme.type == "dark"
-    except Exception:
-        return False
+    """FoldShield uses the light palette regardless of the browser or OS preference."""
+    return False
 
 
 def inject_css() -> None:

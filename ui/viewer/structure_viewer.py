@@ -46,11 +46,8 @@ def _build_html(cfg: dict, box_height: str) -> str:
 
 
 def _streamlit_is_dark() -> bool:
-    """True when the Streamlit app is currently using its dark theme."""
-    try:
-        return st.context.theme.type == "dark"
-    except Exception:                           # older Streamlit: no st.context.theme
-        return False
+    """FoldShield's embedded structure viewers always use the light palette."""
+    return False
 
 def structure_viewer(*, pdb_id: str | None = None, pdb_text: str | None = None, height: int = 620,
                      fill: bool = False, auto_rotate: bool | None = None, minimal: bool = False,
@@ -62,13 +59,12 @@ def structure_viewer(*, pdb_id: str | None = None, pdb_text: str | None = None, 
     and panels; leaving fullscreen returns to the compact view. Auto-rotation defaults on in
     minimal mode and off otherwise. Set auto_rotate to override that default.
 
-    dark=None (default) follows the Streamlit theme from the very first paint; pass True/False to force it.
+    The viewer uses FoldShield's fixed light palette for consistency across devices.
     """
     if not pdb_text and not pdb_id:
         st.info("No structure available for this entry.")
         return
-    if dark is None:                            # follow the app theme (the script keeps following it live)
-        dark = _streamlit_is_dark()
+    dark = False
     cfg = {
         "pdbId": str(pdb_id) if (pdb_id and not pdb_text) else None,
         "pdbText": pdb_text or None,

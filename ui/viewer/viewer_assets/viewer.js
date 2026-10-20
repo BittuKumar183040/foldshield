@@ -93,17 +93,8 @@ function detectDarkFromPage() {
 }
 
 function getInitialDarkTheme() {
-  const preference = readStreamlitThemePreference();
-
-  if (preference === "dark") return true;
-  if (preference === "light") return false;
-
-  // System mode: detect the theme Streamlit has actually rendered.
-  const detected = detectDarkFromPage();
-
-  return detected === null
-    ? Boolean(CFG.dark)
-    : detected;
+  // FoldShield uses a fixed light palette across browsers and devices.
+  return false;
 }
 
 /* ---------------- Theme initialization ---------------- */
@@ -155,30 +146,7 @@ const v = $3Dmol.createViewer("v", {
 /* ---------------- Live theme synchronization ---------------- */
 
 function syncStreamlitTheme() {
-  const preference = readStreamlitThemePreference();
-  let dark;
-
-  if (preference === "dark") {
-    dark = true;
-  } else if (preference === "light") {
-    dark = false;
-  } else {
-    const detected = detectDarkFromPage();
-
-    if (detected === null) return;
-
-    dark = detected;
-  }
-
-  if (dark === S.dark) return;
-
-  S.dark = dark;
-
-  // Update CSS first, then update the WebGL rendering background.
-  applyThemeBackground(dark);
-
-  v.setBackgroundColor(getThemeBackground(dark));
-  v.render();
+  // Ignore browser, OS and Streamlit user theme preferences.
 }
 
 // React to theme preference changes.

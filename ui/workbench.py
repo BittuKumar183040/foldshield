@@ -147,18 +147,12 @@ class Tool:
 
 
 def _theme(option: str, fallback: str) -> str:
-    try:
-        if st.context.theme.type == "dark":
-            dark_values = {
-                "backgroundColor": "#090807",
-                "secondaryBackgroundColor": "#191614",
-                "textColor": "#f1e9e3",
-            }
-            if option in dark_values:
-                return dark_values[option]
-    except Exception:
-        pass
-    return st.get_option(f"theme.{option}") or fallback
+    light_values = {
+        "backgroundColor": "#fdfcfb",
+        "secondaryBackgroundColor": "#ffffff",
+        "textColor": "#2b211b",
+    }
+    return light_values.get(option, st.get_option(f"theme.{option}") or fallback)
 
 
 def _col(pseudo: str) -> str:
