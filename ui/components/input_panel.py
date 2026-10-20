@@ -137,13 +137,17 @@ def render_inputs() -> AnalyzeInputs:
         with col_query:
             query, query_chain = _structure_card("query")
 
-        opt_mode, opt_het = st.columns([2, 1.5], vertical_alignment="bottom")
+        opt_mode, opt_het, run_action = st.columns([2.5, 1.4, 1.5], vertical_alignment="bottom")
         with opt_mode:
-            mode = st.radio( "Coordinate mode", ["ca", "sequence"], index=0, horizontal=True, format_func=lambda x: "CA" if x == "ca" else "Sequence", )
+            mode = st.radio(
+                "Coordinate mode",
+                ["ca", "sequence"],
+                index=0,
+                horizontal=True,
+                format_func=lambda x: "CA" if x == "ca" else "Sequence",
+            )
         with opt_het:
             keep_hetatm = st.checkbox("Keep HETATM", value=False)
-
-        _, run_action = st.columns([4, 1.5], vertical_alignment="center")
         with run_action:
             ready = ref.ready and query.ready
             run = st.button("Run pipeline", type="primary", width="stretch",

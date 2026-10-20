@@ -3,7 +3,8 @@ from datetime import date
 
 import streamlit as st
 
-from ui.route import BRAND_ICON, ROUTES, link
+from ui.components.navbar import BRAND_LOGO
+from ui.route import ROUTES, link
 from ui.components.submission import SUBMISSION_URL
 
 BRAND = "FoldShield++"
@@ -22,7 +23,7 @@ def _brand_html() -> str:
     # Keep colors inherited from Streamlit so the footer follows light and dark themes.
     return f"""
     <div style="display:flex;align-items:center;gap:.65rem;margin:.25rem 0 .75rem">
-      <img src="{BRAND_ICON}" alt="" style="height:2.25rem;width:2.25rem;object-fit:contain">
+      <img src="{BRAND_LOGO}" alt="" style="height:2.25rem;width:2.25rem;object-fit:contain">
       <span style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">{BRAND}</span>
     </div>
     """

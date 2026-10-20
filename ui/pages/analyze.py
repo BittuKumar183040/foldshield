@@ -97,5 +97,5 @@ def render() -> None:
 
     # A run finished without a summary: show why, with a way back to the inputs.
     st.button("Back", icon=":material/arrow_back:", on_click=_go_back)
-    empty_state("No results yet", "Upload a reference and a query PDB and run the pipeline, or load a saved summary.json.")
+    empty_state("No results yet", "Upload a reference and a query PDB and run the pipeline")
     render_log(result)
