@@ -16,7 +16,7 @@ _CSS = """
 [data-testid="stAppViewContainer"] [data-testid="stMainBlockContainer"] { padding-top: 3.5rem !important; }
 
 /* sticky must sit on the wrapper Streamlit puts around the keyed container (it is a direct child of the tall page block) */
-[data-testid="stLayoutWrapper"]:has(> .st-key-navbar) { position: absolute; top: 0; left: 0; z-index: 999; }
+[data-testid="stLayoutWrapper"]:has(> .st-key-navbar) { position: fixed; top: 0; left: 0; z-index: 999; }
 
 /* the bar itself: same glass look as the old header */
 .st-key-navbar {
